@@ -31,16 +31,27 @@ public class HostController {
 
 
     @PostMapping
-    public void addHost() {
-        // TODO : Add Host
+    public void addHost(@RequestParam String id,
+                        @RequestParam String username,
+                        @RequestParam String firstname,
+                        @RequestParam String lastname,
+                        @RequestParam String email,
+                        @RequestParam String phone) throws IOException {
+        hostServices.addHost(new Host(id, username, firstname, lastname, email, phone));
     }
 
-    @PutMapping
-    public void updateHost() {
-       // TODO : Update Host
+    @PutMapping(path = "/{id}")
+    public void updateHost(@PathVariable("id") String id,
+                           @RequestParam String username,
+                           @RequestParam String firstname,
+                           @RequestParam String lastname,
+                           @RequestParam String email,
+                           @RequestParam String phone) throws IOException {
+       hostServices.updateHostById(id, username, firstname, lastname, email, phone);
     }
 
-    @DeleteMapping(path = "/{id}")
+    //soft delete
+    @PutMapping(path = "/{id}")
     public void deleteHost(@PathVariable("id") String id) throws IOException {
         hostServices.deleteHostById(id);
     }
