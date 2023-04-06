@@ -32,6 +32,12 @@ public class HostServices {
             throw new IOException();
         }
         return repository.get();
+    }
 
+    public void deleteHostById(String id) throws IOException {
+        if (id == null) {
+            throw new IOException();
+        }
+        hostRepository.deleteById(id);
     }
 }

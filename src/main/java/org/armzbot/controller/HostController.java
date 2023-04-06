@@ -3,12 +3,10 @@ package org.armzbot.controller;
 import org.armzbot.models.Host;
 import org.armzbot.services.HostServices;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "api/v1/host")
@@ -31,19 +29,20 @@ public class HostController {
         return hostServices.getHostById(id);
     }
 
-    /*
+
     @PostMapping
-    public Host addHost() {
+    public void addHost() {
+        // TODO : Add Host
     }
 
     @PutMapping
-    public Host updateHost() {
-        return
+    public void updateHost() {
+       // TODO : Update Host
     }
 
-    @DeleteMapping
-    public Host deleteHost() {
-        return
+    @DeleteMapping(path = "/{id}")
+    public void deleteHost(@PathVariable("id") String id) throws IOException {
+        hostServices.deleteHostById(id);
     }
-*/
+
 }
