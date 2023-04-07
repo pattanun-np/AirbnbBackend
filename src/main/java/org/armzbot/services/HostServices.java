@@ -53,8 +53,8 @@ public class HostServices {
                                String firstname, String lastname,
                                String email, String phone) throws IOException {
 
-        if (id == null && username == null && firstname == null
-                && lastname == null && email == null && phone == null) {
+        if (id == null || (username == null && firstname == null
+                && lastname == null && email == null && phone == null)) {
             throw new IOException("input is null");
         }
 
@@ -66,7 +66,7 @@ public class HostServices {
 
         Host host = repository.get();
 
-        if (!repository.get().isActive()) {
+        if (!host.isActive()) {
             throw new IOException("not found");
         }
         if (username != null) {
@@ -95,10 +95,10 @@ public class HostServices {
         if (!repository.isPresent()) {
             throw new IOException("not found");
         }
-        if (!repository.get().isActive()) {
+        Host host = repository.get();
+        if (!host.isActive()) {
             throw new IOException("not found");
         }
-        Host host = repository.get();
         host.setActive(false);
         hostRepository.save(host);
     }

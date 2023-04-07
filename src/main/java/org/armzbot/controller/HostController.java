@@ -42,11 +42,11 @@ public class HostController {
 
     @PutMapping(path = "/{id}")
     public void updateHost(@PathVariable("id") String id,
-                           @RequestParam String username,
-                           @RequestParam String firstname,
-                           @RequestParam String lastname,
-                           @RequestParam String email,
-                           @RequestParam String phone) throws IOException {
+                           @RequestParam(required = false) String username,
+                           @RequestParam(required = false) String firstname,
+                           @RequestParam(required = false) String lastname,
+                           @RequestParam(required = false) String email,
+                           @RequestParam(required = false) String phone) throws IOException {
        hostServices.updateHostById(id, username, firstname, lastname, email, phone);
     }
 
