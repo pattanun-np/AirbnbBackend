@@ -20,8 +20,8 @@ public class HostServices {
         this.hostRepository = hostRepository;
     }
 
-    public List<Host> getAllHost() {
-        return hostRepository.findAll();
+    public List<Host> getAllHosts() {
+        return hostRepository.findAllHosts();
     }
 
     public Host getHostById(String id) throws IOException {

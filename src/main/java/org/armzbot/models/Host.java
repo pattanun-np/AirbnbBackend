@@ -28,7 +28,7 @@ public class Host {
     private String phone;
 
     @Column
-    private boolean is_Active;
+    private boolean is_active;
     public Host(String host_id, String username,
                 String firstname, String lastname,
                 String email, String phone) {
@@ -38,7 +38,7 @@ public class Host {
         this.lastname = lastname;
         this.email = email;
         this.phone = phone;
-        this.is_Active = true;
+        this.is_active = true;
     }
 
     public String getHost_id() {
@@ -90,11 +90,11 @@ public class Host {
     }
 
     public boolean isActive() {
-        return is_Active;
+        return is_active;
     }
 
     public void setActive(boolean is_Active) {
-        this.is_Active = is_Active;
+        this.is_active = is_Active;
     }
 
     public boolean hasNull() {

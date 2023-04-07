@@ -3,6 +3,7 @@ package org.armzbot.controller;
 import org.armzbot.models.Host;
 import org.armzbot.services.HostServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -20,13 +21,15 @@ public class HostController {
     }
 
     @GetMapping
-    public List<Host> getAllHost() {
-        return hostServices.getAllHost();
+    public ResponseEntity<List<Host>> getAllHosts() {
+        List<Host> response = hostServices.getAllHosts();
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping(path = "/{id}")
-    public Host getHostById(@PathVariable("id") String id) throws IOException {
-        return hostServices.getHostById(id);
+    public ResponseEntity<Host> getHostById(@PathVariable("id") String id) throws IOException {
+        Host response = hostServices.getHostById(id);
+        return ResponseEntity.ok(response);
     }
 
 
@@ -41,13 +44,14 @@ public class HostController {
     }
 
     @PutMapping(path = "/{id}")
-    public void updateHost(@PathVariable("id") String id,
+    public ResponseEntity<String> updateHost(@PathVariable("id") String id,
                            @RequestParam(required = false) String username,
                            @RequestParam(required = false) String firstname,
                            @RequestParam(required = false) String lastname,
                            @RequestParam(required = false) String email,
                            @RequestParam(required = false) String phone) throws IOException {
        hostServices.updateHostById(id, username, firstname, lastname, email, phone);
+       return ResponseEntity.ok("update successes");
     }
 
     //soft delete
