@@ -5,9 +5,11 @@ import org.armzbot.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -20,7 +22,7 @@ public class UserServices {
         this.userRepository = userRepository;
     }
 
-    public List<User> getAllUsers() {
+    public Optional<User> getAllUsers() {
         return userRepository.findAllUsers();
     }
 
@@ -35,15 +37,40 @@ public class UserServices {
         return repository.get();
     }
 
-    public void addUser(@RequestBody User user) throws IOException {
-        if (user.hasNull()) {
-            throw new IOException("input is null");
+    public void addUser(String username, String password, String firstname,
+                        String lastname, String email, String phone) throws IOException {
+        //null?
+        if (Objects.isNull(username)) {
+            throw new IOException("username is null");
         }
-        if (userRepository.findById(user.getUser_id()).isPresent()
-                && userRepository.findById(user.getUser_id()).get().isActive()) {
-            throw new IOException("id has already been");
+        if (Objects.isNull(password)) {
+            throw new IOException("password is null");
         }
-        userRepository.save(user);
+        if (Objects.isNull(firstname)) {
+            throw new IOException("firstname is null");
+        }
+        if (Objects.isNull(lastname)) {
+            throw new IOException("lastname is null");
+        }
+        if (Objects.isNull(email)) {
+            throw new IOException("email is null");
+        }
+        if (Objects.isNull(phone)) {
+            throw new IOException("phone is null");
+        }
+        //exist?
+        Optional<User> repository = userRepository.findByUsername(username);
+        User tmp;
+        if (repository.isPresent()){
+            tmp = repository.get();
+            if(tmp.isActive()){
+                throw new IOException("id has already been");
+            }
+        }
+        else throw new IOException("id has already been");
+        //save
+        User entity = new User(username, /*encrypt*/ password, firstname, lastname, email, phone);
+        userRepository.save(entity);
     }
     public void updateUserById(String id, String username,
                                String firstname, String lastname,
@@ -82,7 +109,7 @@ public class UserServices {
     }
     public void deleteUserById(String id) throws IOException {
         if (id == null) {
-            throw new IOException();
+            throw new IOException("input is null");
         }
         Optional<User> repository = userRepository.findById(id);
         if (!repository.isPresent()) {

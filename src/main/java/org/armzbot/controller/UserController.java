@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "api/v1/users")
@@ -21,8 +21,8 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
-        List<User> response = userServices.getAllUsers();
+    public ResponseEntity<Optional<User>> getAllUsers() {
+        Optional<User> response = userServices.getAllUsers();
         return ResponseEntity.ok(response);
     }
 
@@ -32,16 +32,15 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
-
     @PostMapping
-    public void addHost(@RequestParam String id,
-                        @RequestParam String username,
+    public ResponseEntity<String> addHost(@RequestParam String username,
                         @RequestParam String password,
                         @RequestParam String firstname,
                         @RequestParam String lastname,
                         @RequestParam String email,
                         @RequestParam String phone) throws IOException {
-        userServices.addUser(new User(id, username,password, firstname, lastname, email, phone));
+        userServices.addUser(username,password, firstname, lastname, email, phone);
+        return ResponseEntity.ok("User has been added successfully.");
     }
 
     @PutMapping(path = "/{User_id}")
@@ -57,8 +56,9 @@ public class UserController {
 
     //soft delete
     @PutMapping(path = "/{user_id}")
-    public void deleteHost(@PathVariable(value = "user_id") String id) throws IOException {
+    public ResponseEntity<String> deleteHost(@PathVariable(value = "user_id") String id) throws IOException {
         userServices.deleteUserById(id);
+        return ResponseEntity.ok("User has been deleted.");
     }
 
 }

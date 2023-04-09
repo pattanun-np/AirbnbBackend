@@ -15,7 +15,7 @@ public class User {
     @Column(length = 30, nullable = false, updatable = false)
     private String user_id;
 
-    @Column(length = 40, nullable = false)
+    @Column(length = 40, nullable = false, unique = true)
     private String username;
 
     @JsonIgnore
@@ -36,10 +36,9 @@ public class User {
 
     @Column
     private boolean is_active;
-    public User(String host_id, String username, String password,
+    public User(String username, String password,
                 String firstname, String lastname,
                 String email, String phone) {
-        this.user_id = host_id;
         this.username = username;
         this.password = password;
         this.firstname = firstname;
