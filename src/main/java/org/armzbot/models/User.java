@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 
-@Entity(name = "airbnb.host")
+@Entity(name = "user")
 public class User {
 
     @Id
