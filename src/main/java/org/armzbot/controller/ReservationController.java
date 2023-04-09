@@ -31,7 +31,7 @@ public class ReservationController {
 
     @GetMapping(path = "/reservations/{reserve_id}")
     public ResponseEntity<Reservation> getReservationById(
-            @PathVariable(value = "reserve_id") String reserve_id) {
+            @PathVariable(value = "reserve_id") String reserve_id) throws IOException {
         Reservation response = reservationServices.getReservationById(reserve_id);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -48,16 +48,18 @@ public class ReservationController {
         reservationServices.updateReservation(reserve_id, reservation);
     }
 
-    @DeleteMapping(path = "/reservations/{reserve_id}")
-    public void deleteReservationById(
-            @PathVariable(value = "reserve_id") String reserve_id) {
+    @PutMapping(path = "/reservations/{reserve_id}")
+    public ResponseEntity<Reservation> deleteReservationById(
+            @PathVariable(value = "reserve_id") String reserve_id) throws IOException {
         reservationServices.deleteReservationById(reserve_id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @DeleteMapping(path = "/user/{user_id}/reservations")
-    public void deleteAllReservationsOfUser(
+    @PutMapping(path = "/user/{user_id}/reservations")
+    public ResponseEntity<List<Reservation>> deleteAllReservationsOfUser(
             @PathVariable(value = "user_id") String user_id) {
         reservationServices.deleteAllReservationsOfUser(user_id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 
