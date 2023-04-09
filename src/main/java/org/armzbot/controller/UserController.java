@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "api/v1/host")
+@RequestMapping(path = "api/v1/users")
 public class UserController {
 
     private final UserServices userServices;
@@ -21,14 +21,14 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> getAllHosts() {
-        List<User> response = userServices.getAllHosts();
+    public ResponseEntity<List<User>> getAllUsers() {
+        List<User> response = userServices.getAllUsers();
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping(path = "/{id}")
-    public ResponseEntity<User> getHostById(@PathVariable("id") String id) throws IOException {
-        User response = userServices.getHostById(id);
+    @GetMapping(path = "/{user_id}")
+    public ResponseEntity<User> getHostById(@PathVariable(value = "user_id") String id) throws IOException {
+        User response = userServices.getUserById(id);
         return ResponseEntity.ok(response);
     }
 
@@ -41,24 +41,24 @@ public class UserController {
                         @RequestParam String lastname,
                         @RequestParam String email,
                         @RequestParam String phone) throws IOException {
-        userServices.addHost(new User(id, username,password, firstname, lastname, email, phone));
+        userServices.addUser(new User(id, username,password, firstname, lastname, email, phone));
     }
 
-    @PutMapping(path = "/{id}")
-    public ResponseEntity<String> updateHost(@PathVariable("id") String id,
+    @PutMapping(path = "/{User_id}")
+    public ResponseEntity<String> updateHost(@PathVariable(value = "user_id") String id,
                            @RequestParam(required = false) String username,
                            @RequestParam(required = false) String firstname,
                            @RequestParam(required = false) String lastname,
                            @RequestParam(required = false) String email,
                            @RequestParam(required = false) String phone) throws IOException {
-       userServices.updateHostById(id, username, firstname, lastname, email, phone);
+       userServices.updateUserById(id, username, firstname, lastname, email, phone);
        return ResponseEntity.ok("update successful");
     }
 
     //soft delete
-    @PutMapping(path = "/{id}")
-    public void deleteHost(@PathVariable("id") String id) throws IOException {
-        userServices.deleteHostById(id);
+    @PutMapping(path = "/{user_id}")
+    public void deleteHost(@PathVariable(value = "user_id") String id) throws IOException {
+        userServices.deleteUserById(id);
     }
 
 }

@@ -20,26 +20,22 @@ public class UserServices {
         this.userRepository = userRepository;
     }
 
-    public List<User> getAllHosts() {
-        return userRepository.findAllHosts();
+    public List<User> getAllUsers() {
+        return userRepository.findAllUsers();
     }
 
-    public User getHostById(String id) throws IOException {
+    public User getUserById(String id) throws IOException {
         if (id == null) {
             throw new IOException("input is null");
         }
-        Optional<User> repository = userRepository.findById(id);
+        Optional<User> repository = userRepository.findUserById(id);
         if (!repository.isPresent()) {
-            throw new IOException("not found");
+            throw new IOException("Not found id : " + id);
         }
-        User user = repository.get();
-        if (!user.isActive()) {
-            throw new IOException("not found");
-        }
-        return user;
+        return repository.get();
     }
 
-    public void addHost(@RequestBody User user) throws IOException {
+    public void addUser(@RequestBody User user) throws IOException {
         if (user.hasNull()) {
             throw new IOException("input is null");
         }
@@ -49,7 +45,7 @@ public class UserServices {
         }
         userRepository.save(user);
     }
-    public void updateHostById(String id, String username,
+    public void updateUserById(String id, String username,
                                String firstname, String lastname,
                                String email, String phone) throws IOException {
 
@@ -66,9 +62,6 @@ public class UserServices {
 
         User user = repository.get();
 
-        if (!user.isActive()) {
-            throw new IOException("not found");
-        }
         if (username != null) {
             user.setUsername(username);
         }
@@ -87,7 +80,7 @@ public class UserServices {
 
         userRepository.save(user);
     }
-    public void deleteHostById(String id) throws IOException {
+    public void deleteUserById(String id) throws IOException {
         if (id == null) {
             throw new IOException();
         }

@@ -7,6 +7,8 @@ import org.hibernate.annotations.GenericGenerator;
 @Entity(name = "user")
 public class User {
 
+    @OneToOne
+    @JoinColumn()
     @Id
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "uuid2")
