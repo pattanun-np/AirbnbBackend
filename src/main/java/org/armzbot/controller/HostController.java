@@ -1,6 +1,6 @@
 package org.armzbot.controller;
 
-import org.armzbot.models.Host;
+import org.armzbot.models.User;
 import org.armzbot.services.HostServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,14 +21,14 @@ public class HostController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Host>> getAllHosts() {
-        List<Host> response = hostServices.getAllHosts();
+    public ResponseEntity<List<User>> getAllHosts() {
+        List<User> response = hostServices.getAllHosts();
         return ResponseEntity.ok(response);
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<Host> getHostById(@PathVariable("id") String id) throws IOException {
-        Host response = hostServices.getHostById(id);
+    public ResponseEntity<User> getHostById(@PathVariable("id") String id) throws IOException {
+        User response = hostServices.getHostById(id);
         return ResponseEntity.ok(response);
     }
 
@@ -36,11 +36,12 @@ public class HostController {
     @PostMapping
     public void addHost(@RequestParam String id,
                         @RequestParam String username,
+                        @RequestParam String password,
                         @RequestParam String firstname,
                         @RequestParam String lastname,
                         @RequestParam String email,
                         @RequestParam String phone) throws IOException {
-        hostServices.addHost(new Host(id, username, firstname, lastname, email, phone));
+        hostServices.addHost(new User(id, username,password, firstname, lastname, email, phone));
     }
 
     @PutMapping(path = "/{id}")
@@ -51,7 +52,7 @@ public class HostController {
                            @RequestParam(required = false) String email,
                            @RequestParam(required = false) String phone) throws IOException {
        hostServices.updateHostById(id, username, firstname, lastname, email, phone);
-       return ResponseEntity.ok("update successes");
+       return ResponseEntity.ok("update successful");
     }
 
     //soft delete

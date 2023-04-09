@@ -1,19 +1,24 @@
 package org.armzbot.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity(name = "airbnb.host")
-public class Host {
+public class User {
 
     @Id
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "uuid2")
     @Column(length = 30, nullable = false, updatable = false)
-    private String host_id;
+    private String user_id;
 
     @Column(length = 40, nullable = false)
     private String username;
+
+    @JsonIgnore
+    @Column(length = 100, nullable = false)
+    private String password;
 
     @Column(length = 50, nullable = false)
     private String firstname;
@@ -29,11 +34,12 @@ public class Host {
 
     @Column
     private boolean is_active;
-    public Host(String host_id, String username,
+    public User(String host_id, String username, String password,
                 String firstname, String lastname,
                 String email, String phone) {
-        this.host_id = host_id;
+        this.user_id = host_id;
         this.username = username;
+        this.password = password;
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
@@ -41,12 +47,12 @@ public class Host {
         this.is_active = true;
     }
 
-    public String getHost_id() {
-        return host_id;
+    public String getUser_id() {
+        return user_id;
     }
 
-    public void setHost_id(String host_id) {
-        this.host_id = host_id;
+    public void setUser_id(String host_id) {
+        this.user_id = host_id;
     }
 
     public String getUsername() {
@@ -98,7 +104,8 @@ public class Host {
     }
 
     public boolean hasNull() {
-        return host_id == null &&
+        return user_id == null &&
+                password == null &&
                 username == null &&
                 firstname == null &&
                 lastname == null &&

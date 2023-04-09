@@ -1,6 +1,6 @@
 package org.armzbot.services;
 
-import org.armzbot.models.Host;
+import org.armzbot.models.User;
 import org.armzbot.repository.HostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,34 +20,34 @@ public class HostServices {
         this.hostRepository = hostRepository;
     }
 
-    public List<Host> getAllHosts() {
+    public List<User> getAllHosts() {
         return hostRepository.findAllHosts();
     }
 
-    public Host getHostById(String id) throws IOException {
+    public User getHostById(String id) throws IOException {
         if (id == null) {
             throw new IOException("input is null");
         }
-        Optional<Host> repository = hostRepository.findById(id);
+        Optional<User> repository = hostRepository.findById(id);
         if (!repository.isPresent()) {
             throw new IOException("not found");
         }
-        Host host = repository.get();
-        if (!host.isActive()) {
+        User user = repository.get();
+        if (!user.isActive()) {
             throw new IOException("not found");
         }
-        return host;
+        return user;
     }
 
-    public void addHost(@RequestBody Host host) throws IOException {
-        if (host.hasNull()) {
+    public void addHost(@RequestBody User user) throws IOException {
+        if (user.hasNull()) {
             throw new IOException("input is null");
         }
-        if (hostRepository.findById(host.getHost_id()).isPresent()
-                && hostRepository.findById(host.getHost_id()).get().isActive()) {
+        if (hostRepository.findById(user.getUser_id()).isPresent()
+                && hostRepository.findById(user.getUser_id()).get().isActive()) {
             throw new IOException("id has already been");
         }
-        hostRepository.save(host);
+        hostRepository.save(user);
     }
     public void updateHostById(String id, String username,
                                String firstname, String lastname,
@@ -58,48 +58,48 @@ public class HostServices {
             throw new IOException("input is null");
         }
 
-        Optional<Host> repository = hostRepository.findById(id);
+        Optional<User> repository = hostRepository.findById(id);
 
         if (!repository.isPresent()) {
             throw new IOException("not found");
         }
 
-        Host host = repository.get();
+        User user = repository.get();
 
-        if (!host.isActive()) {
+        if (!user.isActive()) {
             throw new IOException("not found");
         }
         if (username != null) {
-            host.setUsername(username);
+            user.setUsername(username);
         }
         if (firstname != null) {
-            host.setFirstname(firstname);
+            user.setFirstname(firstname);
         }
         if (lastname != null) {
-            host.setLastname(lastname);
+            user.setLastname(lastname);
         }
         if (email != null) {
-            host.setEmail(email);
+            user.setEmail(email);
         }
         if (phone != null) {
-            host.setPhone(phone);
+            user.setPhone(phone);
         }
 
-        hostRepository.save(host);
+        hostRepository.save(user);
     }
     public void deleteHostById(String id) throws IOException {
         if (id == null) {
             throw new IOException();
         }
-        Optional<Host> repository = hostRepository.findById(id);
+        Optional<User> repository = hostRepository.findById(id);
         if (!repository.isPresent()) {
             throw new IOException("not found");
         }
-        Host host = repository.get();
-        if (!host.isActive()) {
+        User user = repository.get();
+        if (!user.isActive()) {
             throw new IOException("not found");
         }
-        host.setActive(false);
-        hostRepository.save(host);
+        user.setActive(false);
+        hostRepository.save(user);
     }
 }
