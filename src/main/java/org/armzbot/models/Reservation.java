@@ -34,6 +34,8 @@ public class Reservation {
     @Column
     private String payment_status;
 
+    private boolean is_active;
+
     public Reservation(String reserve_id, String acc_id, User user_id,
                        int guest_amt, Date checkIn, Date checkOut,
                        String payment_status) {
@@ -44,6 +46,7 @@ public class Reservation {
         this.checkIn = checkIn;
         this.checkOut = checkOut;
         this.payment_status = payment_status;
+        this.is_active = true;
     }
 
     public String getReserve_id() {
@@ -101,4 +104,13 @@ public class Reservation {
     public void setPayment_status(String payment_status) {
         this.payment_status = payment_status;
     }
+
+    public boolean isIs_active() {
+        return is_active;
+    }
+
+    public void setIs_active(boolean is_active) {
+        this.is_active = is_active;
+    }
 }
+

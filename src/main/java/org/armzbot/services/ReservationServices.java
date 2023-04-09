@@ -31,8 +31,11 @@ public class ReservationServices {
         return reservationRepository.findByUserId(user_id);
     }
 
-    public Reservation getReservationById(String reserve_id) {
+    public Reservation getReservationById(String reserve_id) throws IOException {
         Optional<Reservation> repository = reservationRepository.findById(reserve_id);
+        if (!repository.isPresent()) {
+            throw new IOException("Not found reservation with id : " + reserve_id);
+        }
         return repository.get();
     }
 
@@ -46,11 +49,23 @@ public class ReservationServices {
         reservationRepository.save(result);
     }
 
-    public void deleteReservationById(String reserve_id) {
-        reservationRepository.deleteById(reserve_id);
+    public void deleteReservationById(String reserve_id) throws IOException {
+        Optional<Reservation> repository = reservationRepository.findById(reserve_id);
+        if (!repository.isPresent()) {
+            throw new IOException("Not found id : " + reserve_id);
+        }
+        Reservation deleteReserve = repository.get();
+        deleteReserve.setIs_active(false);
+        reservationRepository.save(deleteReserve);
     }
 
     public void deleteAllReservationsOfUser(String user_id) {
         reservationRepository.deleteByUserId(user_id);
+        List<Reservation> repositories = reservationRepository.findByUserId(user_id);
+        for (int i = 0; i < repositories.size(); i++) {
+            Reservation deleteReserve = repositories.get(i);
+            deleteReserve.setIs_active(false);
+            reservationRepository.save(deleteReserve);
+        }
     }
 }
