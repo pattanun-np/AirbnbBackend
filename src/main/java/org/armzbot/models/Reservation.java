@@ -1,11 +1,15 @@
 package org.armzbot.models;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.sql.Date;
 
 @Entity(name = "reservation")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Reservation {
 
     @Id
@@ -36,10 +40,7 @@ public class Reservation {
 
     private boolean is_active;
 
-    public Reservation(String reserve_id, String acc_id, User user_id,
-                       int guest_amt, Date checkIn, Date checkOut,
-                       String payment_status) {
-        this.reserve_id = reserve_id;
+ public Reservation(String acc_id,User user_id, int guest_amt, Date checkIn, Date checkOut, String payment_status) {
         this.acc_id = acc_id;
         this.user_id = user_id;
         this.guest_amt = guest_amt;

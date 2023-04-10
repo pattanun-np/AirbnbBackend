@@ -2,9 +2,13 @@ package org.armzbot.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity(name = "user")
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
 
     @OneToOne

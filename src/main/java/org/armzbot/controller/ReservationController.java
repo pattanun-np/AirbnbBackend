@@ -37,14 +37,14 @@ public class ReservationController {
     }
 
     @PostMapping(path = "/User/{user_id}/reservations")
-    public void addReservation(@PathVariable(value = "user_id") String user_id, @RequestBody Reservation reservation) {
+    public void addReservation(@PathVariable(value = "user_id") String user_id,
+                               @RequestBody Reservation reservation) throws IOException{
         reservationServices.addReservation(user_id, reservation);
     }
 
     @PostMapping(path = "/reservations/{reserve_id}")
-    public void updateReservation(
-            @PathVariable(value = "reserve_id") String reserve_id,
-            @RequestBody Reservation reservation) {
+    public void updateReservation(@PathVariable(value = "reserve_id") String reserve_id,
+                                  @RequestBody Reservation reservation) throws IOException{
         reservationServices.updateReservation(reserve_id, reservation);
     }
 

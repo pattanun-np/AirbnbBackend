@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -39,13 +40,35 @@ public class ReservationServices {
         return repository.get();
     }
 
-    public void addReservation(String user_id, Reservation reservation) {
-        reservationRepository.save(reservation);
+    public void addReservation(String user_id, Reservation reservation) throws IOException {
+        Reservation tmp = userRepository.findById(user_id).map(user->{
+            reservation.setUser_id(user);
+            return reservationRepository.save(reservation);}
+        ).orElseThrow(()->new IOException("Not found Tutorial with id =  "+ user_id));
     }
 
-    public void updateReservation(String reserve_id, Reservation reservation) {
+    public void updateReservation(String reserve_id, Reservation reservation) throws IOException{
         Optional<Reservation> repository = reservationRepository.findById(reserve_id);
+        if(repository.isEmpty()) throw new IOException("Not found reservation id : " + reserve_id);
         Reservation result = repository.get();
+
+        if(reservation.getUser_id()!=null)
+            result.setUser_id(reservation.getUser_id());
+
+        if(reservation.getAcc_id()!=null)
+            result.setAcc_id(reservation.getAcc_id());
+
+        result.setGuest_amt(reservation.getGuest_amt());
+
+        if(reservation.getCheckIn()!=null)
+            result.setCheckIn(reservation.getCheckIn());
+
+        if(reservation.getCheckOut()!=null)
+            result.setCheckOut(reservation.getCheckOut());
+
+        if(reservation.getPayment_status()!=null)
+            result.setPayment_status(reservation.getPayment_status());
+
         reservationRepository.save(result);
     }
 

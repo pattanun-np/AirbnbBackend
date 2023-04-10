@@ -33,25 +33,23 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<String> addHost(@RequestParam String username,
+    public void addHost(@RequestParam String username,
                         @RequestParam String password,
                         @RequestParam String firstname,
                         @RequestParam String lastname,
                         @RequestParam String email,
                         @RequestParam String phone) throws IOException {
         userServices.addUser(username,password, firstname, lastname, email, phone);
-        return ResponseEntity.ok("User has been added successfully.");
     }
 
     @PutMapping(path = "/{User_id}")
-    public ResponseEntity<String> updateHost(@PathVariable(value = "user_id") String id,
+    public void updateHost(@PathVariable(value = "user_id") String id,
                            @RequestParam(required = false) String username,
                            @RequestParam(required = false) String firstname,
                            @RequestParam(required = false) String lastname,
                            @RequestParam(required = false) String email,
                            @RequestParam(required = false) String phone) throws IOException {
        userServices.updateUserById(id, username, firstname, lastname, email, phone);
-       return ResponseEntity.ok("update successful");
     }
 
     //soft delete
