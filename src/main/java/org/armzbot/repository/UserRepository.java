@@ -1,6 +1,7 @@
 package org.armzbot.repository;
 
 import org.armzbot.models.User;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -17,4 +18,4 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     @Query(value = "SELECT * FROM user WHERE user.is_active=true AND user.user_id=:id")
     Optional<User> findUserById(@Param("id") String user_id);
-}
+
