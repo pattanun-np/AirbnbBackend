@@ -1,17 +1,30 @@
 package org.armzbot.controller;
 
+import org.armzbot.adaptor.UserAdaptor;
+import org.armzbot.dto.UserProfile;
+import org.armzbot.exception.UserException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("/api/user")
-
+@RequestMapping("/user")
 public class UserController {
-    @GetMapping
-    public String getUser() {
-        return "user";
+
+    private final UserAdaptor userAdaptor;
+
+    public UserController(UserAdaptor userAdaptor) {
+        this.userAdaptor = userAdaptor;
     }
 
+    @GetMapping("/profile")
+    public ResponseEntity<UserProfile> getUserProfile() throws UserException {
+        UserProfile response = userAdaptor.getUserProfile();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+
+    }
 }

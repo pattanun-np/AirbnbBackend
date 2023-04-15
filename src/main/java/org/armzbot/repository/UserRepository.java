@@ -1,22 +1,20 @@
 package org.armzbot.repository;
 
-import org.armzbot.models.User;
+import org.armzbot.entity.User;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.util.Optional;
 
-public interface UserRepository {
+@Repository
+public interface UserRepository extends CrudRepository<User, String> {
 
-    User save(User user);
+    Optional<User> findByEmail(String email);
+
+    Optional<User> findByUsername(String username);
 
 
-    User findById(String id);
-
-
-    User findByEmail(String email);
-
-    List<User> findAll();
-
-    void delete(User user);
+    boolean existsByEmail(String email);
 
 
 }

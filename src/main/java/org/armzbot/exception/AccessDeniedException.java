@@ -2,8 +2,7 @@ package org.armzbot.exception;
 
 import java.io.Serial;
 
-public class AcessDeniedException extends RuntimeException
-{
+public class AccessDeniedException extends RuntimeException {
     @Serial
     private static final long serialVersionUID = 1L;
 
