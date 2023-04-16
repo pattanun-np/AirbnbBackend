@@ -1,8 +1,8 @@
 package org.armzbot.controller;
 
 
-import org.armzbot.models.Reservation;
-import org.armzbot.services.ReservationServices;
+import org.armzbot.entity.Reservation;
+import org.armzbot.services.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,13 +12,13 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "api/v1")
+@RequestMapping("/reservations")
 public class ReservationController {
 
-    private final ReservationServices reservationServices;
+    private final ReservationService reservationServices;
 
     @Autowired
-    public ReservationController(ReservationServices reservationServices) {
+    public ReservationController(ReservationService reservationServices) {
         this.reservationServices = reservationServices;
     }
 
@@ -44,7 +44,7 @@ public class ReservationController {
     @PostMapping(path = "/reservations/{reserve_id}")
     public void updateReservation(
             @PathVariable(value = "reserve_id") String reserve_id,
-            @RequestBody Reservation reservation) {
+            @RequestBody Reservation reservation) throws IOException {
         reservationServices.updateReservation(reserve_id, reservation);
     }
 
@@ -61,8 +61,6 @@ public class ReservationController {
         reservationServices.deleteAllReservationsOfUser(user_id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
-
 
 
 }

@@ -1,21 +1,20 @@
 package org.armzbot.repository;
 
-import org.armzbot.models.Reservation;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.armzbot.entity.Reservation;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface ReservationRepository extends JpaRepository<Reservation, String> {
+public interface ReservationRepository extends CrudRepository<Reservation, String> {
+
+    public static final String FIND_BY_BOOKING_ID = "SELECT r FROM Reservation r WHERE r.booking_id = ?1";
+
+    @Query(FIND_BY_BOOKING_ID)
+    Optional<Reservation> findByBookingId(String booking_id);
+
+    List<Reservation> findByUserId(String user_id);
 
 
-    @Query(value = "SELECT * FROM reservation WHERE reservation.is_active=true")
-    Optional<Reservation> findById(String reserve_id);
-
-    @Query(value = "SELECT * FROM reservation WHERE reservation.is_active=true AND reservation.user_id=:id")
-    List<Reservation> findByUserId(@Param("id") String user_id);
-
-    void deleteByUserId(String user_id);
 }

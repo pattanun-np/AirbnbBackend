@@ -1,47 +1,34 @@
 package org.armzbot.controller;
 
-import org.springframework.http.HttpStatus;
+
+import lombok.Data;
+import org.armzbot.exception.BaseException;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import java.io.IOException;
-
+import java.time.LocalDateTime;
 
 @ControllerAdvice
 public class ErrorAdviser {
 
-    @ExceptionHandler(IOException.class)
-    public ResponseEntity<ErrorResponse> handleIOException(IOException e) {
-        ErrorResponse response = new ErrorResponse(HttpStatus.BAD_REQUEST, e.getMessage());
-        return new ResponseEntity<ErrorResponse>(response, HttpStatus.BAD_REQUEST);
+    @ExceptionHandler(BaseException.class)
+    public ResponseEntity<ErrorResponse> handleBaseException(BaseException e) {
+        ErrorResponse response = new ErrorResponse();
+        response.setError(e.getErrorMessage());
+        response.setStatus(e.getErrorCode());
+        return new ResponseEntity<>(response, HttpStatusCode.valueOf(e.getErrorCode()));
     }
 
+    @Data
     public static class ErrorResponse {
 
-        private HttpStatus status;
+        private LocalDateTime timestamp = LocalDateTime.now();
 
-        private String message;
+        private int status;
 
-        public ErrorResponse(HttpStatus status, String message) {
-            this.status = status;
-            this.message = message;
-        }
+        private String error;
 
-        public HttpStatus getStatus() {
-            return status;
-        }
-
-        public void setStatus(HttpStatus status) {
-            this.status = status;
-        }
-
-        public String getMessage() {
-            return message;
-        }
-
-        public void setMessage(String message) {
-            this.message = message;
-        }
     }
 }
