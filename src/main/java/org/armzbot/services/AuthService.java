@@ -3,12 +3,14 @@ package org.armzbot.services;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @Service
+@Log4j2
 public class AuthService {
 
     public String getCustomToken(String uid, String provider) throws FirebaseAuthException {
