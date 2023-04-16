@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="small_c@ap-southeast.connect.psdb.cloud" uuid="46ef67e8-95c4-44cb-854b-092a9177b6e9">
-      <driver-ref>mysql.8</driver-ref>
+    <data-source source="LOCAL" name="@tiny.db.elephantsql.com" uuid="3912fd71-ded7-4d4c-9ce6-214dbf606fd4">
+      <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
-      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://ap-southeast.connect.psdb.cloud/small_c?sslMode=VERIFY_IDENTIT</jdbc-url>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://tiny.db.elephantsql.com:5432</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>
