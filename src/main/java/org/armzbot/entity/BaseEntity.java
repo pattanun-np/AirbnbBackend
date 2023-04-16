@@ -1,18 +1,52 @@
 package org.armzbot.entity;
 
-import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import org.armzbot.entity.Audit.DateAudit;
-import org.hibernate.annotations.GenericGenerator;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.MappedSuperclass;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
-@EqualsAndHashCode(callSuper = true)
-@Data
+import java.time.LocalDateTime;
+
 @MappedSuperclass
-public abstract class BaseEntity extends DateAudit {
+public abstract class BaseEntity {
     @Id
-    @GenericGenerator(name = "uuid2", strategy = "uuid2")
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(length = 30, unique = true, nullable = false, updatable = false)
+    @GeneratedValue(strategy = GenerationType.UUID, generator = "uuid2")
     private String id;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+
+    private static final long serialVersionUID = 1L;
+
+    @CreatedDate
+    private LocalDateTime createAt = LocalDateTime.now();
+
+
+    @LastModifiedDate
+    private LocalDateTime updatedAt = LocalDateTime.now();
+
+    public LocalDateTime getCreatedDate() {
+        return createAt;
+    }
+
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createAt = createdDate;
+    }
+
+    public LocalDateTime getModifiedDate() {
+        return updatedAt;
+    }
+
+    public void setModifiedDate(LocalDateTime modifiedDate) {
+        this.updatedAt = modifiedDate;
+    }
+
 }

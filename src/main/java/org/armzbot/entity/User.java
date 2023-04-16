@@ -2,18 +2,20 @@ package org.armzbot.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
+
 
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity(name = "users")
 public class User extends BaseEntity implements Serializable {
+
 
     @Column(nullable = false, length = 40, columnDefinition = "varchar(40)", unique = true)
     private String username;
@@ -28,15 +30,14 @@ public class User extends BaseEntity implements Serializable {
 
     @Column(length = 20, columnDefinition = "varchar(20)")
     private String phone;
+    @ColumnDefault("false")
+    private boolean isDeleted;
 
     @Column(length = 100, columnDefinition = "varchar(100)")
     private String password;
 
     @Column(length = 10, columnDefinition = "varchar(10) default 'local'")
     private String provider;
-
-    @OneToMany(mappedBy = "user", orphanRemoval = true, fetch = FetchType.EAGER)
-    private List<Accommodation> accommodations;
 
     public String getEmail() {
         return email;
@@ -71,9 +72,22 @@ public class User extends BaseEntity implements Serializable {
         this.provider = provider;
     }
 
-    public void setAccommodations(List<Accommodation> accommodations) {
-        this.accommodations = accommodations;
+    public String getFirstname() {
+        return firstname;
     }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getProvider() {
+        return provider;
+    }
+
 
     public void setFirstname(String firstname) {
         this.firstname = firstname;
@@ -81,5 +95,16 @@ public class User extends BaseEntity implements Serializable {
 
     public void setLastname(String lastname) {
         this.lastname = lastname;
+    }
+
+    @OneToMany(mappedBy = "user")
+    private Collection<Accommodation> accommodation;
+
+    public Collection<Accommodation> getAccommodation() {
+        return accommodation;
+    }
+
+    public void setAccommodation(Collection<Accommodation> accommodation) {
+        this.accommodation = accommodation;
     }
 }

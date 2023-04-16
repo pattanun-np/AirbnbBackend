@@ -11,16 +11,19 @@ import java.io.InputStream;
 
 @Log4j2
 public class FirebaseAdmin {
+
+
     @PostConstruct
-    private void onStart(){
-//        log.info("Initializing Firebase Admin SDK");
+    private void onStart() {
+            System.out.println("FirebaseAdmin.onStart");
         try {
             initializeFirebaseApp();
         } catch (IOException e) {
-//            log.error("Error initializing Firebase Admin SDK", e);
+            System.out.println("FirebaseAdmin.onStart");
         }
 
     }
+
     private void initializeFirebaseApp() throws IOException {
 
         if (FirebaseApp.getApps() == null || FirebaseApp.getApps().isEmpty()) {

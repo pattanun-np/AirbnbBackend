@@ -1,4 +1,4 @@
-package org.armzbot.adaptor;
-
-public class AuthAdaptor {
-}
+//package org.armzbot.adaptor;
+//
+//public class AuthAdaptor {
+//}

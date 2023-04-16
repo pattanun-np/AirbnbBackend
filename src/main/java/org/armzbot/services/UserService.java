@@ -4,9 +4,6 @@ import lombok.extern.log4j.Log4j2;
 import org.armzbot.entity.User;
 import org.armzbot.exception.UserException;
 import org.armzbot.repository.UserRepository;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -16,16 +13,14 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
 
-    private final PasswordEncoder passwordEncoder;
 
-
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
+
 
     }
 
-    @Cacheable(value = "user", key = "#id", unless = "#result == null")
+    //    @Cacheable(value = "user", key = "#id", unless = "#result == null")
     public Optional<User> findById(String id) {
         //log.info("Load User from DB: " + id);
         return userRepository.findById(id);
@@ -46,12 +41,12 @@ public class UserService {
     }
 
     // Password Matcher
-    public boolean matchPassword(String queryPassword, String encodedPassword) {
-        return passwordEncoder.matches(queryPassword, encodedPassword);
+//    public boolean matchPassword(String queryPassword, String encodedPassword) {
+//        return passwordEncoder.matches(queryPassword, encodedPassword);
+//
+//    }
 
-    }
-
-    @CachePut(value = "user", key = "#id")
+    //    @CachePut(value = "user", key = "#id")
     public User updateName(String id, String name) {
 
         Optional<User> opt = userRepository.findById(id);
@@ -95,7 +90,7 @@ public class UserService {
         entity.setFirstname(firstname);
         entity.setLastname(lastname);
         entity.setPhone(phone);
-        entity.setPassword(passwordEncoder.encode(password));
+//        entity.setPassword(passwordEncoder.encode(password));
         return userRepository.save(entity);
 
     }
