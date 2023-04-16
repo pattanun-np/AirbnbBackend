@@ -26,9 +26,20 @@ public class UserAdaptor {
     }
 
 
+    public UserProfile getUserProfile() throws UserException {
+        Optional<String> opt = SecurityUtil.getCurrentUserId();
 
-    public UserProfile findByID(String id) throws UserException {
-        Optional<User> optUser = userService.findById(id);
+        if (opt.isEmpty()) {
+            throw UserException.unauthorized();
+        }
+        String userId = opt.get();
+
+        return getProfile(userId);
+
+    }
+
+    private UserProfile getProfile(String userId) throws UserException {
+        Optional<User> optUser = userService.findById(userId);
         if (optUser.isEmpty()) {
             throw UserException.notFound();
         }
@@ -40,22 +51,6 @@ public class UserAdaptor {
         userProfile.setPhone(user.getPhone());
         userProfile.setUsername(user.getUsername());
         return userProfile;
-    }
-
-    public UserProfile getUserProfile() throws UserException {
-        Optional<String> opt = SecurityUtil.getCurrentUserId();
-
-        if (opt.isEmpty()) {
-            throw UserException.unauthorized();
-        }
-        String userId = opt.get();
-
-        Optional<User> optUser = userService.findById(userId);
-        if (optUser.isEmpty()) {
-            throw UserException.notFound();
-        }
-        return null;
-
     }
 
 

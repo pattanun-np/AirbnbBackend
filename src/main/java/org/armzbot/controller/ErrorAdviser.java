@@ -3,7 +3,6 @@ package org.armzbot.controller;
 
 import lombok.Data;
 import org.armzbot.exception.BaseException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

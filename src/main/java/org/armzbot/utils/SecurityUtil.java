@@ -25,6 +25,7 @@ public class SecurityUtil {
         }
 
         String userId = (String) principal;
+        System.out.println("userId: " + userId);
         return Optional.of(userId);
     }
 

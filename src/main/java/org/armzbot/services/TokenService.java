@@ -4,14 +4,17 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
 import org.armzbot.entity.User;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.util.Collections;
+import java.util.stream.Collectors;
 
 @Service
 public class TokenService {
-    private FirebaseAuth firebaseAuth;
+    private final FirebaseAuth firebaseAuth;
 
     public TokenService(FirebaseAuth firebaseAuth) {
         this.firebaseAuth = firebaseAuth;
@@ -20,21 +23,20 @@ public class TokenService {
 
 
     public String tokenize(User user) throws FirebaseAuthException {
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.MINUTE, 60);
-        Date expiresAt = calendar.getTime();
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String authorities = auth.getAuthorities()
+                .stream().map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
 
 
-        return firebaseAuth.createCustomToken(user.getId(), null);
+        return firebaseAuth.createCustomToken(user.getId(),
+                Collections.singletonMap("authorities", authorities));
     }
 
-    public FirebaseToken verify(String token) {
-        try {
-            return FirebaseAuth.getInstance().verifyIdToken(token);
+    public FirebaseToken verify(String token) throws FirebaseAuthException {
+        return firebaseAuth.verifyIdToken(token);
 
-        } catch (Exception e) {
-            return null;
-        }
     }
 
 }
