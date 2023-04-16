@@ -2,8 +2,10 @@ package org.armzbot.services;
 
 import lombok.extern.log4j.Log4j2;
 import org.armzbot.entity.User;
+import org.armzbot.exception.BaseException;
 import org.armzbot.exception.UserException;
 import org.armzbot.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -12,18 +14,26 @@ import java.util.Optional;
 @Log4j2
 public class UserService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
 
 
+        this.passwordEncoder = passwordEncoder;
     }
 
     //    @Cacheable(value = "user", key = "#id", unless = "#result == null")
     public Optional<User> findById(String id) {
         //log.info("Load User from DB: " + id);
         return userRepository.findById(id);
+    }
+
+    // Find user by username
+    public Optional<User> findByUsername(String username) {
+        //log.info("Load User from DB by Username: " + username);
+        return userRepository.findByUsername(username);
     }
 
 
@@ -40,58 +50,61 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    // Password Matcher
-//    public boolean matchPassword(String queryPassword, String encodedPassword) {
-//        return passwordEncoder.matches(queryPassword, encodedPassword);
-//
-//    }
+    //Password Matcher
+    public boolean matchPassword(String queryPassword, String encodedPassword) {
+        return passwordEncoder.matches(queryPassword, encodedPassword);
+
+    }
 
     //    @CachePut(value = "user", key = "#id")
-    public User updateName(String id, String name) {
+    public User updateName(String id, String name) throws UserException {
 
         Optional<User> opt = userRepository.findById(id);
         if (opt.isEmpty()) {
-            throw UserException.NotFound();
+            throw UserException.notFound();
         }
         User user = opt.get();
         return userRepository.save(user);
     }
 
-    public User create(
-            String email,
-            String password,
-            String firstname,
-            String lastname,
-            String phone) {
+    public Iterable<User> findAll() {
+        return userRepository.findAll();
+    }
+
+    public User create(User user) throws BaseException {
+
+        System.out.println("Creating user: " + user.getUsername());
+//        System.out.println(user);
         // Validate email
-        if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+        if (!user.getEmail().matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
             throw UserException.invalidEmail();
         }
         // Validate password
-        if (password.length() < 8) {
-            throw UserException.invalidPassword();
+        if (user.getPassword().length() < 8) {
+            throw UserException.invalidPasswordPattern();
         }
         // Validate name
-        if (firstname.length() < 2) {
+        if (user.getFirstname().length() < 2) {
             throw UserException.invalidName();
         }
         // Validate phone
-        if (phone.length() < 10) {
+        if (user.getPhone().length() < 10) {
             throw UserException.invalidPhone();
         }
 
         // Check if user already exists
-        if (userRepository.existsByEmail(email)) {
+        if (userRepository.existsByEmail(user.getEmail())) {
             throw UserException.alreadyExists();
         }
-        // Save
-        User entity = new User();
-        entity.setEmail(email);
-        entity.setFirstname(firstname);
-        entity.setLastname(lastname);
-        entity.setPhone(phone);
-//        entity.setPassword(passwordEncoder.encode(password));
-        return userRepository.save(entity);
+
+        if (userRepository.existsByUsername(user.getUsername())) {
+            throw UserException.alreadyExists();
+        }
+
+        // Encrypt password
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        return userRepository.save(user);
 
     }
 

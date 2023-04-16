@@ -25,6 +25,23 @@ public class UserAdaptor {
 
     }
 
+
+
+    public UserProfile findByID(String id) throws UserException {
+        Optional<User> optUser = userService.findById(id);
+        if (optUser.isEmpty()) {
+            throw UserException.notFound();
+        }
+        User user = optUser.get();
+        UserProfile userProfile = new UserProfile();
+        userProfile.setFirstname(user.getFirstname());
+        userProfile.setLastname(user.getLastname());
+        userProfile.setEmail(user.getEmail());
+        userProfile.setPhone(user.getPhone());
+        userProfile.setUsername(user.getUsername());
+        return userProfile;
+    }
+
     public UserProfile getUserProfile() throws UserException {
         Optional<String> opt = SecurityUtil.getCurrentUserId();
 

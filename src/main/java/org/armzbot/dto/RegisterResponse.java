@@ -1,14 +1,12 @@
 package org.armzbot.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
 public class RegisterResponse {
-    private String username;
-    private String firstname;
-    private String lastname;
-    private String email;
-    private String phone;
+    @JsonProperty("message")
+    private String message;
 
 
 }

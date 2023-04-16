@@ -1,14 +1,15 @@
 package org.armzbot.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.ColumnDefault;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 
 
 @EqualsAndHashCode(callSuper = true)
@@ -96,6 +97,7 @@ public class User extends BaseEntity implements Serializable {
     public void setLastname(String lastname) {
         this.lastname = lastname;
     }
+
 
     @OneToMany(mappedBy = "user")
     private Collection<Accommodation> accommodation;

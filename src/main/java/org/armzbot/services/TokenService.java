@@ -11,6 +11,12 @@ import java.util.Date;
 
 @Service
 public class TokenService {
+    private FirebaseAuth firebaseAuth;
+
+    public TokenService(FirebaseAuth firebaseAuth) {
+        this.firebaseAuth = firebaseAuth;
+
+    }
 
 
     public String tokenize(User user) throws FirebaseAuthException {
@@ -18,7 +24,8 @@ public class TokenService {
         calendar.add(Calendar.MINUTE, 60);
         Date expiresAt = calendar.getTime();
 
-        return FirebaseAuth.getInstance().createCustomToken(user.getId());
+
+        return firebaseAuth.createCustomToken(user.getId(), null);
     }
 
     public FirebaseToken verify(String token) {
