@@ -39,4 +39,11 @@ public class AuthenticationController {
     }
 
 
+    @PostMapping("/change-password")
+    public ResponseEntity<LoginResponse> changePassword(@RequestBody LoginRequest r) throws BaseException, FirebaseAuthException {
+        LoginResponse response = authAdaptor.login(r);
+        response.setMessage("User logged in successfully");
+        return ResponseEntity.ok(response);
+    }
+
 }

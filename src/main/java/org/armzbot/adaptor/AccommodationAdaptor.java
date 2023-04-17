@@ -2,11 +2,11 @@ package org.armzbot.adaptor;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.armzbot.dto.AccommodationObject;
 import org.armzbot.dto.AccommodationRequest;
 import org.armzbot.dto.AccommodationResponse;
 import org.armzbot.entity.Accommodation;
 import org.armzbot.entity.User;
-import org.armzbot.exception.AccommodationException;
 import org.armzbot.exception.BaseException;
 import org.armzbot.exception.UserException;
 import org.armzbot.services.AccommodationService;
@@ -21,6 +21,7 @@ import java.util.Optional;
 @Log4j2
 @RequiredArgsConstructor
 public class AccommodationAdaptor {
+
 
     private final AccommodationService accommodationService;
     private final UserService userService;
@@ -88,15 +89,14 @@ public class AccommodationAdaptor {
         return new AccommodationResponse();
     }
 
-    public Optional<Accommodation> getAccommodationById(String acc_id) throws BaseException {
-        Optional<Accommodation> accommodation = accommodationService.getAccommodationById(acc_id);
-        if (accommodation.isEmpty()) {
-            throw AccommodationException.notFround();
-        }
-        return accommodation;
+    public AccommodationObject getAccommodationById(String acc_id) throws BaseException {
+
+        return accommodationService.getAccommodationById(acc_id);
+
+
     }
 
-    public List<Accommodation> getAllAccommodations() {
+    public List<AccommodationObject> getAllAccommodations() {
         return accommodationService.getAllAccommodations();
     }
 

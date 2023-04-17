@@ -1,31 +1,28 @@
 package org.armzbot.adaptor;
 
 import com.google.firebase.auth.FirebaseAuthException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.armzbot.dto.LoginRequest;
-import org.armzbot.dto.LoginResponse;
-import org.armzbot.dto.RegisterRequest;
-import org.armzbot.dto.RegisterResponse;
+import org.armzbot.dto.*;
 import org.armzbot.entity.User;
 import org.armzbot.exception.BaseException;
 import org.armzbot.exception.UserException;
 import org.armzbot.services.TokenService;
 import org.armzbot.services.UserService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
 @Log4j2
+@RequiredArgsConstructor
 public class AuthAdaptor {
     private final UserService userService;
     public final TokenService tokenService;
 
-    public AuthAdaptor(UserService userService,
-                       TokenService tokenService) {
-        this.userService = userService;
-        this.tokenService = tokenService;
-    }
+    public final PasswordEncoder passwordEncoder;
+
 
     public LoginResponse login(LoginRequest r) throws BaseException, FirebaseAuthException {
         String username = r.getUsername();
@@ -36,7 +33,7 @@ public class AuthAdaptor {
             throw UserException.notFound();
         }
         User user = optUser.get();
-        if (!userService.matchPassword(password, user.getPassword())) {
+        if (userService.matchPassword(password, user.getPassword())) {
             throw UserException.invalidPassword();
         }
 
@@ -64,11 +61,59 @@ public class AuthAdaptor {
                 .provider("local")
                 .build();
 
-        user = userService.create(user);
+
+        // Validate email
+        if (!user.getEmail().matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            throw UserException.invalidEmail();
+        }
+        // Validate password
+        if (user.getPassword().length() < 8) {
+            throw UserException.invalidPasswordPattern();
+        }
+        // Validate name
+        if (user.getFirstname().length() < 2) {
+            throw UserException.invalidName();
+        }
+        // Validate phone
+        if (user.getPhone().length() < 10) {
+            throw UserException.invalidPhone();
+        }
+
+        // Check if user already exists
+        if (userService.findByEmail(user.getEmail()).isPresent()) {
+            throw UserException.alreadyExists();
+        }
+
+        if (userService.findByUsername(user.getUsername()).isPresent()) {
+            throw UserException.alreadyExists();
+        }
+
+        // Encrypt password
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+
+        userService.create(user);
         return new RegisterResponse();
 
 
     }
 
+    public ChangePasswordResponse changePassword(ChangePasswordRequest r) throws BaseException {
+        String username = r.getUsername();
+        String oldPassword = r.getOldPassword();
+        String newPassword = r.getNewPassword();
+        Optional<User> optUser = userService.findByUsername(username);
+        if (optUser.isEmpty()) {
+            throw UserException.notFound();
+        }
+        User user = optUser.get();
+        if (userService.matchPassword(oldPassword, user.getPassword())) {
+            throw UserException.invalidPassword();
+        }
+
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userService.update(user);
+        return new ChangePasswordResponse();
+    }
 
 }
