@@ -2,6 +2,7 @@ package org.armzbot.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.armzbot.adaptor.AccommodationAdaptor;
+import org.armzbot.dto.AccommodationObject;
 import org.armzbot.dto.AccommodationRequest;
 import org.armzbot.dto.AccommodationResponse;
 import org.armzbot.entity.Accommodation;
@@ -10,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/accommodation")
@@ -18,14 +18,18 @@ import java.util.Optional;
 public class AccommodationController {
     private final AccommodationAdaptor accommodationAdaptor;
 
+
+
     @GetMapping(path = "/{accommodation_id}")
-    public Optional<Accommodation> getAccommodationById(@PathVariable(value = "accommodation_id") String accommodation_id) throws Exception {
-        return accommodationAdaptor.getAccommodationById(accommodation_id);
+    public ResponseEntity<AccommodationObject> getAccommodationById(@PathVariable(value = "accommodation_id") String accommodation_id) throws Exception {
+        AccommodationObject res = accommodationAdaptor.getAccommodationById(accommodation_id);
+        return ResponseEntity.ok(res);
     }
 
     @GetMapping(path = "")
-    public List<Accommodation> getAllAccommodations() throws Exception {
-        return accommodationAdaptor.getAllAccommodations();
+    public ResponseEntity<List<AccommodationObject>> getAllAccommodations() {
+        List<AccommodationObject> res = accommodationAdaptor.getAllAccommodations();
+        return ResponseEntity.ok(res);
     }
 
 

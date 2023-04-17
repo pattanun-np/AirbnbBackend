@@ -1,15 +1,15 @@
 package org.armzbot.repository;
 
+
+import lombok.NonNull;
 import org.armzbot.entity.Accommodation;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface AccommodationRepository extends CrudRepository<Accommodation, String> {
+public interface AccommodationRepository extends JpaRepository<Accommodation, String> {
 
     public static final String FIND_BY_LAT_LONG = "SELECT * FROM accommodations WHERE lat = ?1 AND lon = ?2";
 
@@ -21,10 +21,8 @@ public interface AccommodationRepository extends CrudRepository<Accommodation, S
 
     public static final String FIND_BY_ACC_ID = "SELECT * FROM accommodations WHERE id = ?1";
 
-
     @Query(value = FIND_BY_ACCOMMODATION_NAME, nativeQuery = true)
     Iterable<Accommodation> findByAccommodationName(String accommodationName);
-
 
     @Query(value = FIND_BY_LAT_LONG, nativeQuery = true)
     Optional<Accommodation> findByLatLong(double lat, double lon);
@@ -32,7 +30,7 @@ public interface AccommodationRepository extends CrudRepository<Accommodation, S
     @Query(value = FIND_BY_USER_ID, nativeQuery = true)
     List<Accommodation> findByUserId(String user_id);
 
-    Page<Accommodation> findAll(Pageable pageable);
+    @NonNull List<Accommodation> findAll();
 
 
     @Query(value = FIND_BY_ACC_ID, nativeQuery = true)
