@@ -30,7 +30,7 @@ public class AuthAdaptor {
     public LoginResponse login(LoginRequest r) throws BaseException, FirebaseAuthException {
         String username = r.getUsername();
         String password = r.getPassword();
-        System.out.println("Logging in user: " + username);
+//        System.out.println("Logging in user: " + username);
         Optional<User> optUser = userService.findByUsername(username);
         if (optUser.isEmpty()) {
             throw UserException.notFound();
@@ -53,14 +53,16 @@ public class AuthAdaptor {
         if (optUser.isPresent()) {
             throw UserException.alreadyExists();
         }
-        User user = new User();
-        user.setEmail(r.getEmail());
-        user.setPassword(r.getPassword());
-        user.setFirstname(r.getFirstname());
-        user.setLastname(r.getLastname());
-        user.setPhone(r.getPhone());
-        user.setUsername(r.getUsername());
-        user.setProvider("local");
+        // Use builder from lombok to create a new user object
+        User user = User.builder()
+                .firstname(r.getFirstname())
+                .lastname(r.getLastname())
+                .email(r.getEmail())
+                .phone(r.getPhone())
+                .username(r.getUsername())
+                .password(r.getPassword())
+                .provider("local")
+                .build();
 
         user = userService.create(user);
         return new RegisterResponse();

@@ -30,14 +30,13 @@ public class AuthenticationController {
         return ResponseEntity.ok(response);
     }
 
+
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest r) throws BaseException, FirebaseAuthException {
         LoginResponse response = authAdaptor.login(r);
-
         response.setMessage("User logged in successfully");
         return ResponseEntity.ok(response);
     }
-
 
 
 }
