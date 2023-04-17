@@ -1,0 +1,239 @@
+{
+	"info": {
+		"_postman_id": "d79b4291-9d92-477a-bd67-59a59873fddb",
+		"name": "Airbnb",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6769815"
+	},
+	"item": [
+		{
+			"name": "RequireAuth",
+			"item": [
+				{
+					"name": "Profile",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/user/profile",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Accommodation",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"acc_name\": \"{{$randomWord}}\",\n    \"room_type\": \"apartment\",\n    \"minimum_nights\": 1,\n    \"maximum_nights\": 365,\n    \"price\": 200.00,\n    \"description\": \"{{$randomLoremSentence}}\",\n    \"room_address\": \"{{$randomStreetAddress}}\",\n    \"room_street\": \"{{$randomStreetAddress}}\",\n    \"room_state\": \"Bangkok\",\n    \"room_country\": \"Thailand\",\n    \"room_country_code\": \"TH\",\n    \"cancellation_policy\": \"Free Cancel\",\n    \"location_lat\": {{$randomLatitude}},\n    \"location_long\": {{$randomLongitude}},\n    \"bathrooms\": 2,\n    \"bedroom\": 2,\n    \"has_internet\": true,\n    \"has_tv\": true,\n    \"has_kitchen\": true,\n    \"has_air_conditioning\": true,\n    \"has_heating\": true,\n    \"is_active\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/accommodation",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"accommodation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Accommodation",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/accommodation/53be9bb1-cf0c-4d50-976f-506f58ed041f",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"accommodation",
+								"53be9bb1-cf0c-4d50-976f-506f58ed041f"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"",
+							"const option = {",
+							"    url: pm.variables.get(\"baseUrl\") + \"/auth/login\",",
+							"    method: 'POST',",
+							"    header: { 'content-type': 'application/json' },",
+							"    body: {",
+							"        mode: 'raw',",
+							"        raw: JSON.stringify({",
+							"            \"username\": \"r3m2a2\",",
+							"            \"password\": \"133333333333324\"",
+							"        })",
+							"",
+							"    }",
+							"}",
+							"pm.sendRequest(option, function (err, res) {",
+							"",
+							"    const customToken = res.json().token",
+							"    // pm.variables.set(\"customToken\", res.json().token);",
+							"",
+							"    // console.log(customToken)",
+							"    const sign = {",
+							"        url: \"https://identitytoolkit.googleapis.com/v1/accounts:signInWithCustomToken?key=\" + pm.variables.get(\"FirebaseAPIKey\"),",
+							"        method: \"POST\",",
+							"        header: {",
+							"            \"Content-Type\": \"application/json\"",
+							"        },",
+							"        body: {",
+							"            mode: \"urlencoded\",",
+							"            urlencoded: [",
+							"                { key: \"returnSecureToken\", value: true },",
+							"                { key: \"token\", value: customToken }",
+							"            ],",
+							"",
+							"        }",
+							"    }",
+							"",
+							"    pm.sendRequest(sign, function (err, firebase_res) {",
+							"        console.log(firebase_res.json())",
+							"        pm.variables.set(\"Token\", firebase_res.json().idToken);",
+							"",
+							"        // console.log(pm.variables.get(\"Token\"))",
+							"    })",
+							"",
+							"}",
+							"",
+							");",
+							"",
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"r3m2a2\",\n    \"firstname\": \"pattnan\",\n    \"lastname\": \"22222222222222\",\n    \"password\": \"133333333333324\",\n    \"email\": \"pta2a2@dww93d3d.cdo\",\n    \"phone\": \"222222222222\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/auth/register",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"r3m2a2\",\n\n \n    \"password\": \"133333333333324\"\n    \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/auth/login",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
