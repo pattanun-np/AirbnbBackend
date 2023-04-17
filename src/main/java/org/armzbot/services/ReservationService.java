@@ -1,5 +1,6 @@
 package org.armzbot.services;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.armzbot.entity.Reservation;
 import org.armzbot.repository.ReservationRepository;
@@ -12,16 +13,13 @@ import java.util.Optional;
 
 @Service
 @Log4j2
+@RequiredArgsConstructor
 public class ReservationService {
 
     private final ReservationRepository reservationRepository;
 
     private final UserRepository userRepository;
 
-    public ReservationService(ReservationRepository reservationRepository, UserRepository userRepository) {
-        this.reservationRepository = reservationRepository;
-        this.userRepository = userRepository;
-    }
 
     public List<Reservation> getAllReservationsByUserId(String user_id) throws IOException {
         if (user_id == null) {
@@ -42,7 +40,6 @@ public class ReservationService {
     }
 
     public void addReservation(String user_id, Reservation reservation) {
-
         reservationRepository.save(reservation);
     }
 
@@ -61,7 +58,7 @@ public class ReservationService {
             throw new IOException("Not found reservation with id : " + reserve_id);
         }
         Reservation deleteReserve = repository.get();
-        deleteReserve.setIs_active(false);
+        deleteReserve.setIsActive(false);
         reservationRepository.save(deleteReserve);
     }
 
@@ -69,7 +66,7 @@ public class ReservationService {
 
         List<Reservation> repositories = reservationRepository.findByUserId(user_id);
         for (Reservation deleteReserve : repositories) {
-            deleteReserve.setIs_active(false);
+            deleteReserve.setIsActive(false);
             reservationRepository.save(deleteReserve);
         }
     }

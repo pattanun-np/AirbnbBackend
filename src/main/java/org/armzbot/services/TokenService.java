@@ -3,6 +3,8 @@ package org.armzbot.services;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.armzbot.entity.User;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,13 +15,10 @@ import java.util.Collections;
 import java.util.stream.Collectors;
 
 @Service
+@Log4j2
+@RequiredArgsConstructor
 public class TokenService {
     private final FirebaseAuth firebaseAuth;
-
-    public TokenService(FirebaseAuth firebaseAuth) {
-        this.firebaseAuth = firebaseAuth;
-
-    }
 
 
     public String tokenize(User user) throws FirebaseAuthException {
