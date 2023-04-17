@@ -1,20 +1,21 @@
 package org.armzbot;
 
-import jakarta.annotation.PostConstruct;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.util.TimeZone;
-
 @SpringBootApplication
+//@EnableScheduling
+//@EnableCaching
 public class Main {
+    private static final Logger logger = LogManager.getLogger(Main.class);
 
     public static void main(String[] args) {
-        SpringApplication.run(Main.class,args);
+
+
+        SpringApplication.run(Main.class, args);
     }
 
-    @PostConstruct
-    void init() {
-        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
-    }
+
 }

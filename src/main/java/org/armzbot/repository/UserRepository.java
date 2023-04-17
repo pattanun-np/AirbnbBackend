@@ -1,21 +1,23 @@
 package org.armzbot.repository;
 
-import org.armzbot.models.User;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
+import org.armzbot.entity.User;
+import org.springframework.data.repository.CrudRepository;
 
-import java.util.List;
 import java.util.Optional;
 
-@Repository
-public interface UserRepository extends JpaRepository<User, String> {
+public interface UserRepository extends CrudRepository<User, String> {
 
-    @Query(value = "SELECT * FROM user WHERE user.is_active=true")
-    List<User> findAllUsers();
+    Optional<User> findByEmail(String email);
 
-    @Query(value = "SELECT * FROM user WHERE user.is_active=true AND user.user_id=:id")
-    Optional<User> findUserById(@Param("id") String user_id);
+    Optional<User> findByUsernameAndPassword(String username, String password);
 
+    Optional<User> findByUsername(String username);
+
+
+    boolean existsByUsername(String username);
+
+    boolean existsByEmail(String email);
+
+
+}
