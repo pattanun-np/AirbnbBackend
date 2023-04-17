@@ -1,5 +1,6 @@
 package org.armzbot.services;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.armzbot.entity.User;
 import org.armzbot.exception.BaseException;
@@ -12,17 +13,11 @@ import java.util.Optional;
 
 @Service
 @Log4j2
+@RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-
-
-        this.passwordEncoder = passwordEncoder;
-    }
 
     //    @Cacheable(value = "user", key = "#id", unless = "#result == null")
     public Optional<User> findById(String id) {

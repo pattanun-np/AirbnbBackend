@@ -2,14 +2,16 @@ package org.armzbot.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import java.io.Serializable;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
+@Builder
 @Entity(name = "accommodation_images")
+@AllArgsConstructor
+@NoArgsConstructor
 public class AccommodationImages extends BaseEntity implements Serializable {
 
     @Column(nullable = false)

@@ -1,5 +1,6 @@
 package org.armzbot.adaptor;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.armzbot.dto.UserProfile;
 import org.armzbot.entity.User;
@@ -12,18 +13,10 @@ import java.util.Optional;
 
 @Service
 @Log4j2
+@RequiredArgsConstructor
 public class UserAdaptor {
 
     private final UserService userService;
-
-
-    public UserAdaptor(
-            UserService userService
-    ) {
-
-        this.userService = userService;
-
-    }
 
 
     public UserProfile getUserProfile() throws UserException {

@@ -1,15 +1,17 @@
 package org.armzbot.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
+@Builder
 @Entity(name = "accommodations")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Accommodation extends BaseEntity implements Serializable {
     @Column()
     private String acc_name;
@@ -21,7 +23,6 @@ public class Accommodation extends BaseEntity implements Serializable {
     private int maximum_nights;
     @Column()
     private float price;
-
     @Column()
     private String description;
     @Column()
@@ -61,10 +62,15 @@ public class Accommodation extends BaseEntity implements Serializable {
     @Column()
     private boolean has_heating;
 
+    @Column()
+    private boolean is_active;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false, updatable = false)
     private User user;
     @OneToMany(mappedBy = "accommodation", orphanRemoval = true)
     private List<AccommodationImages> accommodationImages;
+
+
 }
