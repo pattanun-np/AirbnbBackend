@@ -35,7 +35,7 @@ public class AccommodationController {
         return ResponseEntity.ok(res);
     }
 
-    @GetMapping(path = "/search")
+    @PostMapping (path = "/search")
     public Page<AccommodationObject> search(@RequestBody SearchRequest request) throws BaseException {
         return accommodationAdaptor.searchAccommodation(request);
     }
