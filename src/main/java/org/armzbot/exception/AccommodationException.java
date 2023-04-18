@@ -19,6 +19,7 @@ public class AccommodationException extends BaseException {
     }
 
     public static AccommodationException notFround() {
+
         return new AccommodationException("notFound", 404);
     }
 

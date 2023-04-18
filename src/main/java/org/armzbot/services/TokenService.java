@@ -34,8 +34,16 @@ public class TokenService {
     }
 
     public FirebaseToken verify(String token) throws FirebaseAuthException {
-        return firebaseAuth.verifyIdToken(token);
+        return firebaseAuth.verifyIdToken(token, true);
 
+    }
+
+    public void revoke(String token) throws FirebaseAuthException {
+        firebaseAuth.revokeRefreshTokens(token);
+    }
+
+    public void setCustomClaims(String token, String claims) throws FirebaseAuthException {
+        firebaseAuth.setCustomUserClaims(token, Collections.singletonMap("authorities", claims));
     }
 
 }

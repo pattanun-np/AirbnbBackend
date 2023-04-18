@@ -2,8 +2,7 @@ package org.armzbot.adaptor;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.armzbot.dto.AccommodationRequest;
-import org.armzbot.dto.AccommodationResponse;
+import org.armzbot.dto.*;
 import org.armzbot.entity.Accommodation;
 import org.armzbot.entity.User;
 import org.armzbot.exception.AccommodationException;
@@ -14,6 +13,7 @@ import org.armzbot.services.UserService;
 import org.armzbot.utils.SecurityUtil;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +21,7 @@ import java.util.Optional;
 @Log4j2
 @RequiredArgsConstructor
 public class AccommodationAdaptor {
+
 
     private final AccommodationService accommodationService;
     private final UserService userService;
@@ -88,16 +89,23 @@ public class AccommodationAdaptor {
         return new AccommodationResponse();
     }
 
-    public Optional<Accommodation> getAccommodationById(String acc_id) throws BaseException {
-        Optional<Accommodation> accommodation = accommodationService.getAccommodationById(acc_id);
-        if (accommodation.isEmpty()) {
-            throw AccommodationException.notFround();
-        }
-        return accommodation;
+    public AccommodationObject getAccommodationById(String acc_id) throws BaseException {
+
+        return accommodationService.getAccommodationById(acc_id);
+
+
     }
 
-    public List<Accommodation> getAllAccommodations() {
+    public List<AccommodationObject> getAllAccommodations() {
         return accommodationService.getAllAccommodations();
+    }
+
+    public UploadImageToAccommodationResponse uploadImageToAccommodation(ImageUpload request, String acc_id) throws IOException, AccommodationException {
+        String image_url = accommodationService.UploadImageToAccommodation(acc_id, request.getImageSource());
+
+        UploadImageToAccommodationResponse res = new UploadImageToAccommodationResponse();
+        res.setImageUrl(image_url);
+        return res;
     }
 
 

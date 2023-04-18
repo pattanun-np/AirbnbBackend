@@ -4,6 +4,7 @@ import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.cloud.StorageClient;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,6 +26,9 @@ public class FirebaseAdmin {
             GoogleCredentials credentials = GoogleCredentials.fromStream(serviceAccount);
             FirebaseOptions options = FirebaseOptions.builder()
                     .setCredentials(credentials)
+                    .setProjectId("airbnbprojects-79e2e")
+                    .setStorageBucket("airbnbprojects-79e2e.appspot.com")
+                    .setDatabaseUrl("https://airbnbprojects-79e2e.firebaseio.com")
                     .build();
 
             FirebaseApp.initializeApp(options);
@@ -33,18 +37,23 @@ public class FirebaseAdmin {
     }
 
     @Bean
-    public FirebaseAuth firebaseAuth(){
+    public FirebaseAuth firebaseAuth() {
 
         return FirebaseAuth.getInstance();
     }
 
+    @Bean
+    public StorageClient storageClient() {
+        return StorageClient.getInstance();
+    }
+
     @PostConstruct
     private void onStart() {
-        System.out.println("FirebaseAdmin.onStart");
+        log.info("FirebaseAdmin.onStart");
         try {
             initializeFirebaseApp();
         } catch (IOException e) {
-            System.out.println("FirebaseAdmin.onStart");
+            log.error("FirebaseAdmin Error onStart", e);
         }
 
     }

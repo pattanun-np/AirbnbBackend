@@ -9,19 +9,19 @@ import java.util.Optional;
 
 public interface ReservationRepository extends CrudRepository<Reservation, String> {
 
-    public static final String FIND_BY_BOOKING_ID = "SELECT r FROM Reservation r WHERE r.booking_id = ?1";
+    public static final String FIND_BY_BOOKING_ID = "SELECT r FROM reservations r WHERE r.booking_id = ?1";
 
-    public static final String FIND_BY_USER_ID = "SELECT r FROM Reservation r WHERE r.user_id = ?1";
+    public static final String FIND_BY_USER_ID = "SELECT r FROM reservations r WHERE r.user_id = ?1";
 
-    public static final String FIND_BY_CHECK_IN = "SELECT r FROM Reservation r WHERE r.check_in = ?1";
+    public static final String FIND_BY_CHECK_IN = "SELECT r FROM reservations r WHERE r.check_in = ?1";
 
-    public static final String FIND_BY_CHECK_IN_AND_CHECK_OUT = "SELECT r FROM Reservation r WHERE r.check_in = ?1 AND r.check_out = ?2";
-
-
-    public static final String FIND_BY_CHECK_OUT = "SELECT r FROM Reservation r WHERE r.check_out = ?1";
+    public static final String FIND_BY_CHECK_IN_AND_CHECK_OUT = "SELECT r FROM reservations r WHERE r.check_in = ?1 AND r.check_out = ?2";
 
 
-    public static final String FIND_BY_PAYMENT_STATUS = "SELECT r FROM Reservation r WHERE r.payment_status = ?";
+    public static final String FIND_BY_CHECK_OUT = "SELECT r FROM reservations r WHERE r.check_out = ?1";
+
+
+    public static final String FIND_BY_PAYMENT_STATUS = "SELECT r FROM reservations r WHERE r.payment_status = ?";
 
 
     @Query(value = FIND_BY_BOOKING_ID, nativeQuery = true)
