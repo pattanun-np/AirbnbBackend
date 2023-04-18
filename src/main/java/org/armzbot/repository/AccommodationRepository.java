@@ -2,7 +2,11 @@ package org.armzbot.repository;
 
 
 import lombok.NonNull;
+import org.armzbot.domain.common.query.SearchSpecification;
+import org.armzbot.dto.AccommodationObject;
 import org.armzbot.entity.Accommodation;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -21,6 +25,8 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, St
 
     public static final String FIND_BY_ACC_ID = "SELECT * FROM accommodations WHERE id = ?1";
 
+    public static final String FIND_ALL = "SELECT * FROM accommodations";
+
     @Query(value = FIND_BY_ACCOMMODATION_NAME, nativeQuery = true)
     Iterable<Accommodation> findByAccommodationName(String accommodationName);
 
@@ -35,4 +41,7 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, St
 
     @Query(value = FIND_BY_ACC_ID, nativeQuery = true)
     Optional<Accommodation> findByID(String id);
+
+    @Query(value = FIND_ALL, nativeQuery = true)
+    Page<Accommodation> findAll(SearchSpecification<AccommodationObject> searchSpecification, Pageable pageable);
 }

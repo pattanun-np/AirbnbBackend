@@ -2,12 +2,17 @@ package org.armzbot.services;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.armzbot.domain.common.query.SearchRequest;
+import org.armzbot.domain.common.query.SearchSpecification;
 import org.armzbot.dto.AccommodationObject;
 import org.armzbot.entity.Accommodation;
 import org.armzbot.entity.AccommodationImages;
 import org.armzbot.exception.AccommodationException;
 import org.armzbot.repository.AccommodationImageRepository;
 import org.armzbot.repository.AccommodationRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -146,10 +151,7 @@ public class AccommodationService {
             throw AccommodationException.notFround();
         }
         Accommodation result = repository.get();
-        AccommodationImages acc_image = AccommodationImages.builder()
-                .accommodation(result)
-                .url(image_url)
-                .build();
+        AccommodationImages acc_image = AccommodationImages.builder().accommodation(result).url(image_url).build();
 
         AccommodationImages accommodationImg = accommodationImageRepository.save(acc_image);
 
@@ -163,6 +165,17 @@ public class AccommodationService {
         accommodationRepository.save(result);
 
         return image_url;
+    }
+
+    public Page<AccommodationObject> searchAccommodation(SearchRequest searchRequest) {
+
+        SearchSpecification<AccommodationObject> searchSpecification = new SearchSpecification<AccommodationObject>(searchRequest);
+        Pageable pageable = PageRequest.of(searchRequest.getPage(), searchRequest.getSize());
+        Page<Accommodation> acc_p = accommodationRepository.findAll(searchSpecification, pageable);
+
+        return acc_p.map(this::BuildAccommodationObj);
+
+
     }
 
 
