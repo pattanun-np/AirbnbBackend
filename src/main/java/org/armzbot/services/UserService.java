@@ -41,13 +41,13 @@ public class UserService {
 
 
     // Update user
-    public User update(User user) {
-        return userRepository.save(user);
+    public void update(User user) {
+        userRepository.save(user);
     }
 
     //Password Matcher
     public boolean matchPassword(String queryPassword, String encodedPassword) {
-        return passwordEncoder.matches(queryPassword, encodedPassword);
+        return !passwordEncoder.matches(queryPassword, encodedPassword);
 
     }
 
@@ -68,36 +68,6 @@ public class UserService {
 
     public User create(User user) throws BaseException {
 
-        System.out.println("Creating user: " + user.getUsername());
-//        System.out.println(user);
-        // Validate email
-        if (!user.getEmail().matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
-            throw UserException.invalidEmail();
-        }
-        // Validate password
-        if (user.getPassword().length() < 8) {
-            throw UserException.invalidPasswordPattern();
-        }
-        // Validate name
-        if (user.getFirstname().length() < 2) {
-            throw UserException.invalidName();
-        }
-        // Validate phone
-        if (user.getPhone().length() < 10) {
-            throw UserException.invalidPhone();
-        }
-
-        // Check if user already exists
-        if (userRepository.existsByEmail(user.getEmail())) {
-            throw UserException.alreadyExists();
-        }
-
-        if (userRepository.existsByUsername(user.getUsername())) {
-            throw UserException.alreadyExists();
-        }
-
-        // Encrypt password
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         return userRepository.save(user);
 
