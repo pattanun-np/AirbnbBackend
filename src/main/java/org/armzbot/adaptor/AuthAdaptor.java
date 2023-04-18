@@ -1,6 +1,7 @@
 package org.armzbot.adaptor;
 
 import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.FirebaseToken;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.armzbot.dto.*;
@@ -23,6 +24,21 @@ public class AuthAdaptor {
 
     public final PasswordEncoder passwordEncoder;
 
+    // Sign up user with Google provider
+    public LoginResponse loginGoogle(String id_token) throws BaseException, FirebaseAuthException {
+        FirebaseToken decodedToken = tokenService.verify(id_token);
+        String uid = decodedToken.getUid();
+
+        Optional<User> optUser = userService.findById(uid);
+        if (optUser.isEmpty()) {
+            throw UserException.notFound();
+        }
+        tokenService.setCustomClaims(uid, "ROLE_USER");
+        String token = tokenService.tokenize(optUser.get());
+        LoginResponse response = new LoginResponse();
+        response.setToken(token);
+        return response;
+    }
 
     public LoginResponse login(LoginRequest r) throws BaseException, FirebaseAuthException {
         String username = r.getUsername();
@@ -114,6 +130,12 @@ public class AuthAdaptor {
         user.setPassword(passwordEncoder.encode(newPassword));
         userService.update(user);
         return new ChangePasswordResponse();
+    }
+
+    public boolean isUserExist(String id_token) throws FirebaseAuthException {
+        FirebaseToken decodedToken = tokenService.verify(id_token);
+        String uid = decodedToken.getUid();
+        return userService.findById(uid).isPresent();
     }
 
 }

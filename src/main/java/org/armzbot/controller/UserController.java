@@ -17,6 +17,7 @@ public class UserController {
 
     private final UserAdaptor userAdaptor;
 
+    ///api/v1/user/profile
     @GetMapping("/profile")
     public ResponseEntity<UserProfile> getUserProfile() throws UserException {
         UserProfile response = userAdaptor.getUserProfile();
