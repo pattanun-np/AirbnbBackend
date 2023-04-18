@@ -2,11 +2,10 @@ package org.armzbot.adaptor;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.armzbot.dto.AccommodationObject;
-import org.armzbot.dto.AccommodationRequest;
-import org.armzbot.dto.AccommodationResponse;
+import org.armzbot.dto.*;
 import org.armzbot.entity.Accommodation;
 import org.armzbot.entity.User;
+import org.armzbot.exception.AccommodationException;
 import org.armzbot.exception.BaseException;
 import org.armzbot.exception.UserException;
 import org.armzbot.services.AccommodationService;
@@ -14,6 +13,7 @@ import org.armzbot.services.UserService;
 import org.armzbot.utils.SecurityUtil;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -98,6 +98,14 @@ public class AccommodationAdaptor {
 
     public List<AccommodationObject> getAllAccommodations() {
         return accommodationService.getAllAccommodations();
+    }
+
+    public UploadImageToAccommodationResponse uploadImageToAccommodation(ImageUpload request, String acc_id) throws IOException, AccommodationException {
+        String image_url = accommodationService.UploadImageToAccommodation(acc_id, request.getImageSource());
+
+        UploadImageToAccommodationResponse res = new UploadImageToAccommodationResponse();
+        res.setImageUrl(image_url);
+        return res;
     }
 
 

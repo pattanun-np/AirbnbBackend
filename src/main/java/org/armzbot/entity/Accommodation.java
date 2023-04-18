@@ -70,8 +70,16 @@ public class Accommodation extends BaseEntity implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false, updatable = false)
     private User user;
-    @OneToMany(mappedBy = "accommodation", orphanRemoval = true)
+    @OneToMany(mappedBy = "accommodation", orphanRemoval = false, cascade = CascadeType.ALL)
     private List<AccommodationImages> accommodationImages;
+
+    public List<AccommodationImages> getAccommodationImages() {
+        return accommodationImages;
+    }
+
+    public void setAccommodationImages(List<AccommodationImages> accommodationImages) {
+        this.accommodationImages = accommodationImages;
+    }
 
 
     @Override
