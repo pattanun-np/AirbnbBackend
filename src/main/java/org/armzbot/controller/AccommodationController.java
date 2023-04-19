@@ -2,10 +2,10 @@ package org.armzbot.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.armzbot.adaptor.AccommodationAdaptor;
-import org.armzbot.utils.query.*;
 import org.armzbot.dto.*;
 import org.armzbot.entity.Accommodation;
 import org.armzbot.exception.BaseException;
+import org.armzbot.utils.query.SearchRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +35,7 @@ public class AccommodationController {
         return ResponseEntity.ok(res);
     }
 
-    @PostMapping (path = "/search")
+    @PostMapping(path = "/search")
     public Page<AccommodationObject> search(@RequestBody SearchRequest request) throws BaseException {
         return accommodationAdaptor.searchAccommodation(request);
     }

@@ -115,4 +115,19 @@ public class AccommodationAdaptor {
         return accommodationService.searchAccommodation(request);
     }
 
+
+    public List<AccommodationObject> getMyAccommodations() throws BaseException {
+        Optional<String> opt = SecurityUtil.getCurrentUserId();
+
+        if (opt.isEmpty()) {
+            throw UserException.unauthorized();
+        }
+        String userId = opt.get();
+        Optional<User> optUser = userService.findById(userId);
+        if (optUser.isEmpty()) {
+            throw UserException.notFound();
+        }
+        User user = optUser.get();
+        return accommodationService.getAccommodationByUser(user.getId());
+    }
 }

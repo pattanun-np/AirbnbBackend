@@ -42,5 +42,6 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, St
     Optional<Accommodation> findByID(String id);
 
 
+    @Query(value = FIND_ALL, nativeQuery = true)
     Page<Accommodation> findAll(SearchSpecification<AccommodationObject> searchSpecification, Pageable pageable);
 }

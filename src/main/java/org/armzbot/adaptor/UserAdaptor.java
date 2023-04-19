@@ -31,7 +31,8 @@ public class UserAdaptor {
 
     }
 
-    private UserProfile getProfile(String userId) throws UserException {
+
+    public UserProfile getProfile(String userId) throws UserException {
         Optional<User> optUser = userService.findById(userId);
         if (optUser.isEmpty()) {
             throw UserException.notFound();
@@ -47,6 +48,18 @@ public class UserAdaptor {
     }
 
 
-
+    public void updateProfile(String userId, UserProfile userProfile) throws UserException {
+        Optional<User> optUser = userService.findById(userId);
+        if (optUser.isEmpty()) {
+            throw UserException.notFound();
+        }
+        User user = optUser.get();
+        user.setFirstname(userProfile.getFirstname());
+        user.setLastname(userProfile.getLastname());
+        user.setEmail(userProfile.getEmail());
+        user.setPhone(userProfile.getPhone());
+        user.setUsername(userProfile.getUsername());
+        userService.updateUserProfile(userId, user);
+    }
 
 }

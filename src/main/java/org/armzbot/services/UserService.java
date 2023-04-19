@@ -74,4 +74,18 @@ public class UserService {
     }
 
 
+    public void updateUserProfile(String userId, User user) throws UserException {
+        Optional<User> optUser = userRepository.findById(userId);
+        if (optUser.isEmpty()) {
+            throw UserException.notFound();
+        }
+        User user1 = optUser.get();
+        user1.setFirstname(user.getFirstname());
+        user1.setLastname(user.getLastname());
+        user1.setEmail(user.getEmail());
+        user1.setPhone(user.getPhone());
+        user1.setUsername(user.getUsername());
+        userRepository.save(user1);
+    }
+
 }

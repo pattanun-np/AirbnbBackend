@@ -178,6 +178,19 @@ public class AccommodationService {
 
     }
 
+    public List<AccommodationObject> getAccommodationByUser(String user_id) {
+        ArrayList<AccommodationObject> accommodations = new ArrayList<>();
+        List<Accommodation> result = accommodationRepository.findByUserId(user_id);
+
+        for (Accommodation acc : result) {
+            if (acc.is_active()) {
+                accommodations.add(BuildAccommodationObj(acc));
+            }
+        }
+
+        return accommodations;
+
+    }
 
 }
 
