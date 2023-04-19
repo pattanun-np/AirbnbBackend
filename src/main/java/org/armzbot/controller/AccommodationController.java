@@ -2,7 +2,7 @@ package org.armzbot.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.armzbot.adaptor.AccommodationAdaptor;
-import org.armzbot.domain.common.query.SearchRequest;
+import org.armzbot.utils.query.*;
 import org.armzbot.dto.*;
 import org.armzbot.entity.Accommodation;
 import org.armzbot.exception.BaseException;

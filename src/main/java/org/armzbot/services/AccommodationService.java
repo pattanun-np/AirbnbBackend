@@ -2,14 +2,14 @@ package org.armzbot.services;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.armzbot.domain.common.query.SearchRequest;
-import org.armzbot.domain.common.query.SearchSpecification;
 import org.armzbot.dto.AccommodationObject;
 import org.armzbot.entity.Accommodation;
 import org.armzbot.entity.AccommodationImages;
 import org.armzbot.exception.AccommodationException;
 import org.armzbot.repository.AccommodationImageRepository;
 import org.armzbot.repository.AccommodationRepository;
+import org.armzbot.utils.query.SearchRequest;
+import org.armzbot.utils.query.SearchSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

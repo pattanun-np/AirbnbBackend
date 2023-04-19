@@ -2,7 +2,6 @@ package org.armzbot.adaptor;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.armzbot.domain.common.query.SearchRequest;
 import org.armzbot.dto.*;
 import org.armzbot.entity.Accommodation;
 import org.armzbot.entity.User;
@@ -12,6 +11,7 @@ import org.armzbot.exception.UserException;
 import org.armzbot.services.AccommodationService;
 import org.armzbot.services.UserService;
 import org.armzbot.utils.SecurityUtil;
+import org.armzbot.utils.query.SearchRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
