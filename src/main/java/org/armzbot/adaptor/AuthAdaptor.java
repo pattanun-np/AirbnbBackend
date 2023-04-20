@@ -18,7 +18,7 @@ import java.util.Optional;
 @Service
 @Log4j2
 @RequiredArgsConstructor
-public class AuthAdaptor {
+public class        AuthAdaptor {
     private final UserService userService;
     public final TokenService tokenService;
 
@@ -52,6 +52,7 @@ public class AuthAdaptor {
         if (userService.matchPassword(password, user.getPassword())) {
             throw UserException.invalidPassword();
         }
+        log.info("User {} logged in", user.getUsername());
 
         String token = tokenService.tokenize(user);
 //        System.out.println("Token: " + token);

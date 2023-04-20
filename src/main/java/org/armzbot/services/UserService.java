@@ -6,6 +6,8 @@ import org.armzbot.entity.User;
 import org.armzbot.exception.BaseException;
 import org.armzbot.exception.UserException;
 import org.armzbot.repository.UserRepository;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,9 +21,9 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
 
-    //    @Cacheable(value = "user", key = "#id", unless = "#result == null")
+    @Cacheable(value = "User", key = "#id", unless = "#result== null")
     public Optional<User> findById(String id) {
-        //log.info("Load User from DB: " + id);
+        log.info("Load User from DB: " + id);
         return userRepository.findById(id);
     }
 
@@ -31,8 +33,18 @@ public class UserService {
         return userRepository.findByUsername(username);
     }
 
+    public Optional<User> findByUsernameAndPassword(String username, String password) {
+        //log.info("Load User from DB by Username: " + username);
+        return userRepository.findByUsernameAndPassword(username, password);
+    }
+
+    public boolean existsByUsername(String username) {
+        return userRepository.existsByUsername(username);
+    }
+
 
     // Find user by email
+    @Cacheable(value = "User", key = "#email", unless = "#result == null")
     public Optional<User> findByEmail(String email) {
         //log.info("Load User from DB by Email: " + email);
         return userRepository.findByEmail(email);
@@ -41,6 +53,7 @@ public class UserService {
 
 
     // Update user
+    @CachePut(value = "User", key = "#user")
     public void update(User user) {
         userRepository.save(user);
     }
@@ -51,17 +64,7 @@ public class UserService {
 
     }
 
-    //    @CachePut(value = "user", key = "#id")
-    public User updateName(String id, String name) throws UserException {
-
-        Optional<User> opt = userRepository.findById(id);
-        if (opt.isEmpty()) {
-            throw UserException.notFound();
-        }
-        User user = opt.get();
-        return userRepository.save(user);
-    }
-
+    // Find all users
     public Iterable<User> findAll() {
         return userRepository.findAll();
     }

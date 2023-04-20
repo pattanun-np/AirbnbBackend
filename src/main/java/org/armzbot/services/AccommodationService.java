@@ -10,6 +10,7 @@ import org.armzbot.repository.AccommodationImageRepository;
 import org.armzbot.repository.AccommodationRepository;
 import org.armzbot.utils.query.SearchRequest;
 import org.armzbot.utils.query.SearchSpecification;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -30,6 +31,7 @@ public class AccommodationService {
     private final AccommodationImageRepository accommodationImageRepository;
 
     private final FileUploadService fileUploadService;
+
 
     private AccommodationObject BuildAccommodationObj(Accommodation acc) {
         AccommodationObject acc_obj = new AccommodationObject();
@@ -57,9 +59,11 @@ public class AccommodationService {
         acc_obj.set_active(acc.is_active());
         acc_obj.setUser_id(acc.getUser().getId());
         acc_obj.setAccommodation_id(acc.getId());
+        acc_obj.setImages(acc.getAccommodationImages());
         return acc_obj;
     }
 
+    @Cacheable(value = "accommodation", unless = "#result == null")
     public List<AccommodationObject> getAllAccommodations() {
         ArrayList<AccommodationObject> accommodations = new ArrayList<>();
         int limit = 10;
@@ -68,11 +72,12 @@ public class AccommodationService {
 
         for (Accommodation acc : result) {
 //            System.out.println(result.get(i).getAcc_name());
-            if (acc.is_active()) {
-                System.out.println(acc.getId());
 
-                accommodations.add(BuildAccommodationObj(acc));
-            }
+//            System.out.println(acc.getId());
+
+
+            accommodations.add(BuildAccommodationObj(acc));
+
         }
 
         return accommodations;
@@ -80,19 +85,20 @@ public class AccommodationService {
     }
 
 
+    @Cacheable(value = "accommodation", key = "#acc_id", unless = "#result == null")
     public AccommodationObject getAccommodationById(String acc_id) throws AccommodationException {
-        System.out.println(acc_id);
-
+//        System.out.println(acc_id);
         Optional<Accommodation> res = accommodationRepository.findByID(acc_id);
 
         if (res.isEmpty()) {
             throw AccommodationException.notFround();
         }
-        System.out.println(res.get().getAcc_name());
-        if (!res.get().is_active()) {
-            throw AccommodationException.notFround();
-        }
+        List<AccommodationImages> accommodationImagesList = accommodationImageRepository.findByAccommodationId(acc_id);
+
+
         Accommodation acc = res.get();
+        acc.setAccommodationImages(accommodationImagesList);
+
         return BuildAccommodationObj(acc);
     }
 
@@ -132,17 +138,18 @@ public class AccommodationService {
         accommodationRepository.save(result);
     }
 
-    public void deleteAccommodationById(String acc_id) {
+    public void deleteAccommodationById(String acc_id) throws AccommodationException {
 
         Optional<Accommodation> repository = accommodationRepository.findByID(acc_id);
         if (repository.isEmpty()) {
-            return;
+            throw AccommodationException.notFround();
         }
 
         Accommodation result = repository.get();
         result.set_active(false);
         accommodationRepository.save(result);
     }
+
 
     public String UploadImageToAccommodation(String acc_id, MultipartFile file) throws IOException, AccommodationException {
         Optional<Accommodation> repository = accommodationRepository.findByID(acc_id);
@@ -178,14 +185,17 @@ public class AccommodationService {
 
     }
 
+
+    @Cacheable(value = "accommodation", key = "#user_id", unless = "#result == null")
     public List<AccommodationObject> getAccommodationByUser(String user_id) {
         ArrayList<AccommodationObject> accommodations = new ArrayList<>();
         List<Accommodation> result = accommodationRepository.findByUserId(user_id);
 
         for (Accommodation acc : result) {
-            if (acc.is_active()) {
-                accommodations.add(BuildAccommodationObj(acc));
-            }
+
+//
+            accommodations.add(BuildAccommodationObj(acc));
+
         }
 
         return accommodations;

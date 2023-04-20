@@ -1,10 +1,14 @@
 package org.armzbot.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
 
 import java.io.Serializable;
 import java.util.List;
+
+import static jakarta.persistence.FetchType.EAGER;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -67,10 +71,14 @@ public class Accommodation extends BaseEntity implements Serializable {
     private boolean is_active;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = EAGER)
     @JoinColumn(name = "user_id", nullable = false, updatable = false)
+    @BatchSize(size = 1000)
+    @JsonIgnore
     private User user;
-    @OneToMany(mappedBy = "accommodation", orphanRemoval = false, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "accommodation", orphanRemoval = false, cascade = CascadeType.ALL, fetch = EAGER)
+    @BatchSize(size = 1000)
+    @JsonIgnore
     private List<AccommodationImages> accommodationImages;
 
     public List<AccommodationImages> getAccommodationImages() {

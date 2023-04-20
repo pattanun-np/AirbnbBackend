@@ -1,9 +1,14 @@
 package org.armzbot.dto;
 
 import lombok.Data;
+import org.armzbot.entity.AccommodationImages;
+
+import java.io.Serializable;
+import java.util.List;
 
 @Data
-public class AccommodationObject {
+public class AccommodationObject implements Serializable {
+
 
     private String accommodation_id;
     private String acc_name;
@@ -54,6 +59,8 @@ public class AccommodationObject {
     private boolean is_active;
 
     private String user_id;
+
+    private List<AccommodationImages> images;
 
 
 }
