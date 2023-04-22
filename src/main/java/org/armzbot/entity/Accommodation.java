@@ -18,6 +18,8 @@ public class Accommodation extends BaseEntity implements Serializable {
     private String acc_name;
     @Column()
     private String room_type;
+    @Column
+    private int max_guest;
     @Column()
     private int minimum_nights;
     @Column()
@@ -70,6 +72,7 @@ public class Accommodation extends BaseEntity implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false, updatable = false)
     private User user;
+
     @OneToMany(mappedBy = "accommodation", orphanRemoval = true)
     private List<AccommodationImages> accommodationImages;
 

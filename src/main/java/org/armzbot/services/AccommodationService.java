@@ -22,6 +22,7 @@ public class AccommodationService {
     private AccommodationObject BuildAccommodationObj(Accommodation acc) {
         AccommodationObject acc_obj = new AccommodationObject();
         acc_obj.setAcc_name(acc.getAcc_name());
+        acc_obj.setMax_guest(acc.getMax_guest());
         acc_obj.setBedroom(acc.getBedroom());
         acc_obj.setBathrooms(acc.getBathrooms());
         acc_obj.setPrice(acc.getPrice());
@@ -69,19 +70,35 @@ public class AccommodationService {
 
 
     public AccommodationObject getAccommodationById(String acc_id) throws AccommodationException {
-        System.out.println(acc_id);
+        //System.out.println(acc_id);
 
         Optional<Accommodation> res = accommodationRepository.findByID(acc_id);
 
         if (res.isEmpty()) {
             throw AccommodationException.notFround();
         }
-        System.out.println(res.get().getAcc_name());
+        //System.out.println(res.get().getAcc_name());
         if (!res.get().is_active()) {
             throw AccommodationException.notFround();
         }
         Accommodation acc = res.get();
         return BuildAccommodationObj(acc);
+    }
+
+    public Accommodation getAccommodationEntityById(String acc_id) throws AccommodationException {
+        //System.out.println(acc_id);
+
+        Optional<Accommodation> res = accommodationRepository.findByID(acc_id);
+
+        if (res.isEmpty()) {
+            throw AccommodationException.notFround();
+        }
+        //System.out.println(res.get().getAcc_name());
+        if (!res.get().is_active()) {
+            throw AccommodationException.notFround();
+        }
+        Accommodation acc = res.get();
+        return acc;
     }
 
     public void addAccommodation(Accommodation accommodation) {

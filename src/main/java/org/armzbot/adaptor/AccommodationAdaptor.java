@@ -49,6 +49,7 @@ public class AccommodationAdaptor {
         User user = optUser.get();
         Accommodation accommodation = Accommodation.builder()
                 .acc_name(acc.getAcc_name())
+                .max_guest(acc.getMax_guest())
                 .bedroom(acc.getBedroom())
                 .bathrooms(acc.getBathrooms())
                 .price(acc.getPrice())
