@@ -18,4 +18,6 @@ public interface AccommodationImageRepository extends JpaRepository<Accommodatio
 
     @Query(value = FIND_BY_ID, nativeQuery = true)
     Optional<AccommodationImages> findByID(String id);
+
+
 }

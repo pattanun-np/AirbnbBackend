@@ -13,7 +13,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Accommodation extends BaseEntity implements Serializable {
-
     @Column()
     private String acc_name;
     @Column()
@@ -70,20 +69,8 @@ public class Accommodation extends BaseEntity implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false, updatable = false)
     private User user;
-    @OneToMany(mappedBy = "accommodation", orphanRemoval = false, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "accommodation", orphanRemoval = true)
     private List<AccommodationImages> accommodationImages;
 
-    public List<AccommodationImages> getAccommodationImages() {
-        return accommodationImages;
-    }
 
-    public void setAccommodationImages(List<AccommodationImages> accommodationImages) {
-        this.accommodationImages = accommodationImages;
-    }
-
-
-    @Override
-    public void setId(String id) {
-        super.setId(id);
-    }
 }

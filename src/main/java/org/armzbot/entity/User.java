@@ -10,6 +10,8 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
+import static jakarta.persistence.FetchType.EAGER;
+
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -44,7 +46,7 @@ public class User extends BaseEntity implements Serializable {
 
 
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",fetch = EAGER)
     private List<Accommodation> accommodation;
 
     public Collection<Accommodation> getAccommodation() {

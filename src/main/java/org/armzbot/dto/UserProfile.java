@@ -2,8 +2,10 @@ package org.armzbot.dto;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
-public class UserProfile {
+public class UserProfile implements Serializable {
 
     private String firstname;
     private String lastname;

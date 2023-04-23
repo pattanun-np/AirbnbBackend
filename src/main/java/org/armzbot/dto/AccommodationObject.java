@@ -1,14 +1,21 @@
 package org.armzbot.dto;
 
 import lombok.Data;
+import org.armzbot.entity.AccommodationImages;
+
+import java.util.List;
 
 @Data
 public class AccommodationObject {
 
     private String accommodation_id;
+
     private String acc_name;
 
     private String room_type;
+
+    private int max_guest;
+
     private int minimum_nights;
 
     private int maximum_nights;
@@ -54,6 +61,8 @@ public class AccommodationObject {
     private boolean is_active;
 
     private String user_id;
+
+    private List<AccommodationImages> images;
 
 
 }

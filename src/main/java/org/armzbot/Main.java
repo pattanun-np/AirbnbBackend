@@ -6,6 +6,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
+//@EnableScheduling
+//@EnableCaching
 public class Main {
     private static final Logger logger = LogManager.getLogger(Main.class);
 

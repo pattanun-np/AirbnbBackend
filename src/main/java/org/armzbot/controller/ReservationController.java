@@ -20,10 +20,10 @@ public class ReservationController {
 
 
     // Get all reservations by user id
-    @GetMapping(path = "")
+    @GetMapping(path = "/{user_id}/reservations")
     public ResponseEntity<List<Reservation>> getAllReservationsByUserId(
-            String user_id) throws Exception {
-        List<Reservation> response = reservationAdaptor.getAllReservationsByUserId();
+            @PathVariable(value = "user_id") String user_id) throws Exception {
+        List<Reservation> response = reservationAdaptor.getAllReservationsByUserId(user_id);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -36,12 +36,12 @@ public class ReservationController {
     }
 
     // Create a reservation
-    @PostMapping(path = "/reservations")
-    public void addReservation(@RequestBody ReservationRequest r) throws Exception {
-        reservationAdaptor.addReservation(r);
+    @PostMapping(path = "/{user_id}/reservations")
+    public void addReservation(@PathVariable(value = "user_id") String user_id,
+                               @RequestBody ReservationRequest r) throws Exception {
+        reservationAdaptor.addReservation(user_id, r);
 
     }
-
 
     @PostMapping(path = "/{reserve_id}")
     public void updateReservation(
