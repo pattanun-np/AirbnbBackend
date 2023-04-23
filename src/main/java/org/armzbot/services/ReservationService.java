@@ -23,37 +23,14 @@ public class ReservationService {
 
     private final ReservationRepository reservationRepository;
 
+    private final AccommodationService accommodationService;
+
     private final UserRepository userRepository;
 
     private ReservationObject buildReservationObject(Reservation res) {
         Accommodation acc = res.getAccommodation();
 
-        AccommodationObject acc_obj = new AccommodationObject();
-        acc_obj.setAcc_name(acc.getAcc_name());
-        acc_obj.setMax_guest(acc.getMax_guest());
-        acc_obj.setBedroom(acc.getBedroom());
-        acc_obj.setBathrooms(acc.getBathrooms());
-        acc_obj.setPrice(acc.getPrice());
-        acc_obj.setDescription(acc.getDescription());
-        acc_obj.setRoom_address(acc.getRoom_address());
-        acc_obj.setRoom_street(acc.getRoom_street());
-        acc_obj.setRoom_state(acc.getRoom_state());
-        acc_obj.setRoom_country(acc.getRoom_country());
-        acc_obj.setRoom_country_code(acc.getRoom_country_code());
-        acc_obj.setCancellation_policy(acc.getCancellation_policy());
-        acc_obj.setLocation_lat(acc.getLocation_lat());
-        acc_obj.setLocation_long(acc.getLocation_long());
-        acc_obj.setHas_internet(acc.isHas_internet());
-        acc_obj.setHas_tv(acc.isHas_tv());
-        acc_obj.setHas_kitchen(acc.isHas_kitchen());
-        acc_obj.setHas_air_conditioning(acc.isHas_air_conditioning());
-        acc_obj.setHas_heating(acc.isHas_heating());
-        acc_obj.setMinimum_nights(acc.getMinimum_nights());
-        acc_obj.setMaximum_nights(acc.getMaximum_nights());
-        acc_obj.setRoom_type(acc.getRoom_type());
-        acc_obj.set_active(acc.is_active());
-        acc_obj.setUser_id(acc.getUser().getId());
-        acc_obj.setAccommodation_id(acc.getId());
+        AccommodationObject acc_obj = accommodationService.BuildAccommodationObj(acc);
 
         return ReservationObject.builder()
                 .reserve_id(res.getId())
@@ -160,7 +137,7 @@ public class ReservationService {
     }
 
     public List<List<Long>> getTimeCheckInOutByAccommodationId(String acc_id) {
-        List<Reservation> repository = reservationRepository.findByAccommodationId(acc_id);
+        List<Reservation> repository = reservationRepository.findByAccommodationID(acc_id);
         ArrayList<Long> timeCheckIn = new ArrayList<>();
         ArrayList<Long> timeCheckOut = new ArrayList<>();
         List<List<Long>> timeCheckInOut = new ArrayList<>();

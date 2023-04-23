@@ -11,15 +11,27 @@ import java.util.Optional;
 
 public interface AccommodationRepository extends CrudRepository<Accommodation, String> {
 
-    public static final String FIND_BY_LAT_LONG = "SELECT * FROM accommodations WHERE lat = ?1 AND lon = ?2";
+    public static final String FIND_BY_LAT_LONG = """
+            SELECT * FROM accommodations
+            WHERE is_active = true AND lat = ?1 AND lon = ?2""";
 
-    public static final String FIND_BY_ACCOMMODATION_NAME = "SELECT * FROM accommodations WHERE accommodation_name = ?1";
+    public static final String FIND_BY_ACCOMMODATION_NAME = """
+            SELECT * FROM accommodations
+            WHERE is_active = true AND accommodation_name = ?1""";
 
-    public static final String FIND_BY_USER_ID = "SELECT * FROM accommodations WHERE user_id = ?1";
+    public static final String FIND_BY_USER_ID = """
+            SELECT * FROM accommodations
+            WHERE is_active = true AND user_id = ?1
+            """;
 
-    public static final String FIND_ALL_WITH_LIMIT = "SELECT * FROM accommodations LIMIT ?1 OFFSET ?2";
+    public static final String FIND_ALL_WITH_LIMIT = """
+            SELECT * FROM accommodations
+            WHERE is_active = true  LIMIT ?1 OFFSET ?2
+            """;
 
-    public static final String FIND_BY_ACC_ID = "SELECT * FROM accommodations WHERE id = ?1";
+    public static final String FIND_BY_ACC_ID = """
+            SELECT * FROM accommodations
+            WHERE is_active = true AND id = ?1""";
 
 
     @Query(value = FIND_BY_ACCOMMODATION_NAME, nativeQuery = true)
