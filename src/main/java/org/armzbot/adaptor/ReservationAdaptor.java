@@ -112,7 +112,7 @@ public class ReservationAdaptor {
         }
 
         // guest amount overs maximum guest exception
-        if (r.getGuest_amt() > accommodation.getMaxGuests()) {
+        if (r.getGuest_amt() > accommodation.getMax_guests()) {
             throw ReservationException.overGuests();
         }
 
@@ -163,9 +163,22 @@ public class ReservationAdaptor {
                             && r.getCheckOut().getTime() <= timeCheckIn.get(i + 1)) {
                         break; // this accommodation has free time
                     }
+
+                // case : last queue
+                } else if ( i - 1 >= 0) {
+
+
+                    if (r.getCheckOut().getTime() <= timeCheckIn.get(i)
+                            && r.getCheckIn().getTime() >= timeCheckOut.get(i - 1)) {
+                        break; // this accommodation has free time
+                    }
+                    if (r.getCheckIn().getTime() >= timeCheckOut.get(i)) {
+                        break; // this accommodation has free time
+                    }
+
+                // case : only 1 in queue
                 } else {
 
-                    // case : only 1 queue that no next in queue
                     if (r.getCheckOut().getTime() <= timeCheckIn.get(i)) {
                         break; // this accommodation has free time
                     }
@@ -264,7 +277,7 @@ public class ReservationAdaptor {
         }
 
         // guest amount overs maximum guest exception
-        if (r.getGuest_amt() > accommodation.getMaxGuests()) {
+        if (r.getGuest_amt() > accommodation.getMax_guests()) {
             throw ReservationException.overGuests();
         }
 

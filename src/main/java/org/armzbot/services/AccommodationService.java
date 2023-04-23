@@ -29,7 +29,7 @@ public class AccommodationService {
     public AccommodationObject BuildAccommodationObj(Accommodation acc) {
         AccommodationObject acc_obj = new AccommodationObject();
         acc_obj.setAcc_name(acc.getAcc_name());
-        acc_obj.setMaxGuests(acc.getMaxGuests());
+        acc_obj.setMax_guests(acc.getMax_guests());
         acc_obj.setBedroom(acc.getBedroom());
         acc_obj.setBathrooms(acc.getBathrooms());
         acc_obj.setPrice(acc.getPrice());
@@ -126,6 +126,7 @@ public class AccommodationService {
         result.setMaximum_nights(accommodation.getMaximum_nights());
         result.setRoom_type(accommodation.getRoom_type());
         result.set_active(accommodation.is_active());
+        result.setMax_guests(accommodation.getMax_guests());
         result.setUser(accommodation.getUser());
         accommodationRepository.save(result);
     }

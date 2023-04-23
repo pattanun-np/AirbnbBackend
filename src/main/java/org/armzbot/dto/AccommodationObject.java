@@ -10,9 +10,11 @@ import java.util.List;
 public class AccommodationObject {
 
     private String accommodation_id;
+
     private String acc_name;
 
     private String room_type;
+
     private int minimum_nights;
 
     private int maximum_nights;
@@ -41,19 +43,15 @@ public class AccommodationObject {
 
     private int bedroom;
 
-
     private boolean has_internet;
 
     private boolean has_tv;
 
     private boolean has_kitchen;
 
-
     private boolean has_air_conditioning;
 
-
     private boolean has_heating;
-
 
     private boolean is_active;
 
@@ -61,6 +59,6 @@ public class AccommodationObject {
 
     private List<AccommodationImages> accommodationImages;
 
-    private int MaxGuests;
+    private int max_guests;
 
 }

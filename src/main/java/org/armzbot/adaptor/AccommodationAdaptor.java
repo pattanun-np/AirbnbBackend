@@ -70,6 +70,7 @@ public class AccommodationAdaptor {
                 .maximum_nights(acc.getMaximum_nights())
                 .room_type(acc.getRoom_type())
                 .is_active(true)
+                .max_guests(acc.getMax_guests())
                 .user(user)
                 .build();
 

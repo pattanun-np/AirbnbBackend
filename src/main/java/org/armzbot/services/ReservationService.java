@@ -31,7 +31,7 @@ public class ReservationService {
 
         AccommodationObject acc_obj = new AccommodationObject();
         acc_obj.setAcc_name(acc.getAcc_name());
-        acc_obj.setMaxGuests(acc.getMaxGuests());
+        acc_obj.setMax_guests(acc.getMax_guests());
         acc_obj.setBedroom(acc.getBedroom());
         acc_obj.setBathrooms(acc.getBathrooms());
         acc_obj.setPrice(acc.getPrice());

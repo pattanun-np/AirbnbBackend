@@ -16,34 +16,49 @@ public class Accommodation extends BaseEntity implements Serializable {
 
     @Column()
     private String acc_name;
+
     @Column()
     private String room_type;
+
     @Column()
     private int minimum_nights;
+
     @Column()
     private int maximum_nights;
+
     @Column()
     private float price;
+
     @Column()
     private String description;
+
     @Column()
     private String room_address;
+
     @Column()
     private String room_street;
+
     @Column()
     private String room_state;
+
     @Column()
     private String room_country;
+
     @Column()
     private String room_country_code;
+
     @Column()
     private String cancellation_policy;
+
     @Column()
     private double location_lat;
+
     @Column()
     private double location_long;
+
     @Column()
     private int bathrooms;
+
     @Column()
     private int bedroom;
 
@@ -59,7 +74,6 @@ public class Accommodation extends BaseEntity implements Serializable {
     @Column()
     private boolean has_air_conditioning;
 
-
     @Column()
     private boolean has_heating;
 
@@ -67,7 +81,7 @@ public class Accommodation extends BaseEntity implements Serializable {
     private boolean is_active;
 
     @Column()
-    private int MaxGuests;
+    private int max_guests;
 
 
     @ManyToOne(fetch = FetchType.LAZY)

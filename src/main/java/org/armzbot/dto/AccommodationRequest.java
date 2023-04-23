@@ -9,7 +9,7 @@ public class AccommodationRequest {
 
     private String room_type;
 
-    private int max_guest;
+    private int max_guests;
 
     private int minimum_nights;
 
@@ -30,6 +30,7 @@ public class AccommodationRequest {
     private String room_country_code;
 
     private String cancellation_policy;
+
     private double location_lat;
 
     private double location_long;
@@ -38,15 +39,11 @@ public class AccommodationRequest {
 
     private int bedroom;
 
-
     private boolean has_internet;
-
 
     private boolean has_tv;
 
-
     private boolean has_kitchen;
-
 
     private boolean has_air_conditioning;
 
