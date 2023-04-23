@@ -26,9 +26,10 @@ public class AccommodationService {
 
     private final FileUploadService fileUploadService;
 
-    private AccommodationObject BuildAccommodationObj(Accommodation acc) {
+    public AccommodationObject BuildAccommodationObj(Accommodation acc) {
         AccommodationObject acc_obj = new AccommodationObject();
         acc_obj.setAcc_name(acc.getAcc_name());
+        acc_obj.setMax_guest(acc.getMax_guest());
         acc_obj.setBedroom(acc.getBedroom());
         acc_obj.setBathrooms(acc.getBathrooms());
         acc_obj.setPrice(acc.getPrice());
@@ -52,6 +53,8 @@ public class AccommodationService {
         acc_obj.set_active(acc.is_active());
         acc_obj.setUser_id(acc.getUser().getId());
         acc_obj.setAccommodation_id(acc.getId());
+        acc_obj.setAccommodationImages(acc.getAccommodationImages());
+
         return acc_obj;
     }
 
@@ -146,10 +149,7 @@ public class AccommodationService {
             throw AccommodationException.notFround();
         }
         Accommodation result = repository.get();
-        AccommodationImages acc_image = AccommodationImages.builder()
-                .accommodation(result)
-                .url(image_url)
-                .build();
+        AccommodationImages acc_image = AccommodationImages.builder().accommodation(result).url(image_url).build();
 
         AccommodationImages accommodationImg = accommodationImageRepository.save(acc_image);
 
@@ -163,8 +163,45 @@ public class AccommodationService {
         accommodationRepository.save(result);
 
         return image_url;
+
+
     }
 
+    public Accommodation getAccommodationEntityById(String acc_id) throws AccommodationException {
+        //System.out.println(acc_id);
 
+        Optional<Accommodation> res = accommodationRepository.findByID(acc_id);
+
+        if (res.isEmpty()) {
+            throw AccommodationException.notFround();
+        }
+        //System.out.println(res.get().getAcc_name());
+        if (!res.get().is_active()) {
+            throw AccommodationException.notFround();
+        }
+        return res.get();
+
+    }
+
+    public List<AccommodationObject> getAccommodationsByUserId(String user_id) throws AccommodationException {
+        ArrayList<AccommodationObject> accommodations = new ArrayList<>();
+        int limit = 10;
+
+        List<Accommodation> result = accommodationRepository.findByUserId(user_id);
+        System.out.println(result.size());
+        if (result.isEmpty()) {
+
+            return accommodations;
+        }
+
+        for (Accommodation acc : result) {
+//            System.out.println(result.get(i).getAcc_name());
+
+
+            accommodations.add(BuildAccommodationObj(acc));
+
+        }
+        return accommodations;
+    }
 }
 
