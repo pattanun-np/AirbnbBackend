@@ -7,6 +7,7 @@ import org.armzbot.adaptor.UserAdaptor;
 import org.armzbot.dto.AccommodationObject;
 import org.armzbot.dto.ReservationObject;
 import org.armzbot.dto.UserProfile;
+import org.armzbot.entity.Reservation;
 import org.armzbot.exception.UserException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

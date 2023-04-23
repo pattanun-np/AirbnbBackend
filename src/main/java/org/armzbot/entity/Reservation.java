@@ -35,6 +35,10 @@ public class Reservation extends BaseEntity implements Serializable {
     private float total_price;
 
 
+    @Column(length = 30, nullable = false)
+    private int total_nights;
+
+
     public void setIsActive(boolean is_active) {
         this.is_active = is_active;
     }

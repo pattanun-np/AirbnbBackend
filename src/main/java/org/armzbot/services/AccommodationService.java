@@ -29,7 +29,7 @@ public class AccommodationService {
     public AccommodationObject BuildAccommodationObj(Accommodation acc) {
         AccommodationObject acc_obj = new AccommodationObject();
         acc_obj.setAcc_name(acc.getAcc_name());
-        acc_obj.setMax_guest(acc.getMax_guest());
+        acc_obj.setMaxGuests(acc.getMaxGuests());
         acc_obj.setBedroom(acc.getBedroom());
         acc_obj.setBathrooms(acc.getBathrooms());
         acc_obj.setPrice(acc.getPrice());
@@ -179,7 +179,10 @@ public class AccommodationService {
         if (!res.get().is_active()) {
             throw AccommodationException.notFround();
         }
-        return res.get();
+
+        Accommodation acc = res.get();
+        acc.setAccommodationImages(accommodationImageRepository.findByAccommodationId(acc.getId()));
+        return acc;
 
     }
 
@@ -196,7 +199,7 @@ public class AccommodationService {
 
         for (Accommodation acc : result) {
 //            System.out.println(result.get(i).getAcc_name());
-
+            acc.setAccommodationImages(accommodationImageRepository.findByAccommodationId(acc.getId()));
 
             accommodations.add(BuildAccommodationObj(acc));
 

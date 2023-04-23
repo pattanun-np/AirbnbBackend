@@ -5,6 +5,7 @@ import org.armzbot.entity.Reservation;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -68,7 +69,7 @@ public interface ReservationRepository extends CrudRepository<Reservation, Strin
 
 
     @Query(value = FIND_BY_CHECK_IN_AND_CHECK_OUT, nativeQuery = true)
-    List<Reservation> findByCheckInAndCheckOut(String check_in, String check_out);
+    List<Reservation> findByCheckInAndCheckOut(Date check_in, Date check_out);
 
     @Query(value = FIND_BY_ACCOMMODATION_ID, nativeQuery = true)
     List<Reservation> findByAccommodationId(String acc_id);

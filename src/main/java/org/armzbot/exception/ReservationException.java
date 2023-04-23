@@ -16,6 +16,7 @@ public class ReservationException extends BaseException {
     public ReservationException(String msg, int code) {
         super("Reservation." + msg, code);
     }
+
     public static ReservationException notFound() {
 
         return new ReservationException("notFound", 404);
@@ -23,7 +24,7 @@ public class ReservationException extends BaseException {
 
     public static ReservationException sameUser() {
 
-        return  new ReservationException("user reserved own accommodation", 400);
+        return new ReservationException("user reserved own accommodation", 400);
     }
 
     public static ReservationException overGuests() {
@@ -71,6 +72,14 @@ public class ReservationException extends BaseException {
         return new ReservationException(
                 "check in and check out are the same day"
                 , 400
+        );
+    }
+
+    public static ReservationException notOwner() {
+
+        return new ReservationException(
+                "permission denied because the reservation is not yours"
+                , 403
         );
     }
 }

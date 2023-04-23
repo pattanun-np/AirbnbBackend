@@ -28,5 +28,7 @@ public class ReservationObject implements Serializable {
 
     private String user_id;
 
+
+    private int total_nights;
     private AccommodationObject accommodation;
 }

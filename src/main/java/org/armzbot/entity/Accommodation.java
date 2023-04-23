@@ -66,6 +66,9 @@ public class Accommodation extends BaseEntity implements Serializable {
     @Column()
     private boolean is_active;
 
+    @Column()
+    private int MaxGuests;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false, updatable = false)

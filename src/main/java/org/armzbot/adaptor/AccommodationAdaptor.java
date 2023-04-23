@@ -109,4 +109,17 @@ public class AccommodationAdaptor {
     }
 
 
+    public List<AccommodationObject> getAccommodationsByUserId() throws AccommodationException {
+        Optional<String> opt = SecurityUtil.getCurrentUserId();
+
+        if (opt.isEmpty()) {
+            try {
+                throw UserException.unauthorized();
+            } catch (UserException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        String userId = opt.get();
+        return accommodationService.getAccommodationsByUserId(userId);
+    }
 }
