@@ -28,9 +28,8 @@ public class ReservationAdaptor {
         }
         String userId = opt.get();
 
-        List<Reservation> res = reservationService.getAllReservationsByUserId(userId);
-        System.out.println("res = " + res);
-        return res;
+        return reservationService.getAllReservationsByUserId(userId);
+
     }
 
     public List<Reservation> getAllReservationsByUserId(String user_id) throws Exception {
@@ -42,21 +41,13 @@ public class ReservationAdaptor {
         return reservationService.getReservationById(reserve_id);
     }
 
-    public void addReservation(ReservationRequest r) throws Exception {
-
-        Optional<String> opt = SecurityUtil.getCurrentUserId();
-
-        if (opt.isEmpty()) {
-            throw UserException.unauthorized();
-        }
-        String userId = opt.get();
-
+    public void addReservation(String user_id, ReservationRequest r) throws Exception{
         Reservation reservation = Reservation.builder()
                 .checkIn(r.getCheckIn())
                 .checkOut(r.getCheckOut())
                 .payment_status("PENDING")
                 .build();
-        reservationService.addReservation(userId, reservation);
+        reservationService.addReservation(user_id, reservation);
     }
 
 

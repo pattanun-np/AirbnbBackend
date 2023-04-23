@@ -1,14 +1,10 @@
 package org.armzbot.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.BatchSize;
 
 import java.io.Serializable;
 import java.util.List;
-
-import static jakarta.persistence.FetchType.EAGER;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -17,7 +13,6 @@ import static jakarta.persistence.FetchType.EAGER;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Accommodation extends BaseEntity implements Serializable {
-
     @Column()
     private String acc_name;
     @Column()
@@ -71,27 +66,11 @@ public class Accommodation extends BaseEntity implements Serializable {
     private boolean is_active;
 
 
-    @ManyToOne(fetch = EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false, updatable = false)
-    @BatchSize(size = 1000)
-    @JsonIgnore
     private User user;
-    @OneToMany(mappedBy = "accommodation", orphanRemoval = false, cascade = CascadeType.ALL, fetch = EAGER)
-    @BatchSize(size = 1000)
-    @JsonIgnore
+    @OneToMany(mappedBy = "accommodation", orphanRemoval = true)
     private List<AccommodationImages> accommodationImages;
 
-    public List<AccommodationImages> getAccommodationImages() {
-        return accommodationImages;
-    }
 
-    public void setAccommodationImages(List<AccommodationImages> accommodationImages) {
-        this.accommodationImages = accommodationImages;
-    }
-
-
-    @Override
-    public void setId(String id) {
-        super.setId(id);
-    }
 }

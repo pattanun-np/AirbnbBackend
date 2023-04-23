@@ -6,8 +6,6 @@ import org.armzbot.entity.User;
 import org.armzbot.exception.BaseException;
 import org.armzbot.exception.UserException;
 import org.armzbot.repository.UserRepository;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,9 +19,9 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
 
-    @Cacheable(value = "User", key = "#id", unless = "#result== null")
+    //    @Cacheable(value = "user", key = "#id", unless = "#result == null")
     public Optional<User> findById(String id) {
-        log.info("Load User from DB: " + id);
+        //log.info("Load User from DB: " + id);
         return userRepository.findById(id);
     }
 
@@ -33,18 +31,8 @@ public class UserService {
         return userRepository.findByUsername(username);
     }
 
-    public Optional<User> findByUsernameAndPassword(String username, String password) {
-        //log.info("Load User from DB by Username: " + username);
-        return userRepository.findByUsernameAndPassword(username, password);
-    }
-
-    public boolean existsByUsername(String username) {
-        return userRepository.existsByUsername(username);
-    }
-
 
     // Find user by email
-    @Cacheable(value = "User", key = "#email", unless = "#result == null")
     public Optional<User> findByEmail(String email) {
         //log.info("Load User from DB by Email: " + email);
         return userRepository.findByEmail(email);
@@ -53,42 +41,67 @@ public class UserService {
 
 
     // Update user
-    @CachePut(value = "User", key = "#user")
-    public void update(User user) {
-        userRepository.save(user);
+    public User update(User user) {
+        return userRepository.save(user);
     }
 
     //Password Matcher
     public boolean matchPassword(String queryPassword, String encodedPassword) {
-        return !passwordEncoder.matches(queryPassword, encodedPassword);
+        return passwordEncoder.matches(queryPassword, encodedPassword);
 
     }
 
-    // Find all users
+    //    @CachePut(value = "user", key = "#id")
+    public User updateName(String id, String name) throws UserException {
+
+        Optional<User> opt = userRepository.findById(id);
+        if (opt.isEmpty()) {
+            throw UserException.notFound();
+        }
+        User user = opt.get();
+        return userRepository.save(user);
+    }
+
     public Iterable<User> findAll() {
         return userRepository.findAll();
     }
 
     public User create(User user) throws BaseException {
 
+        System.out.println("Creating user: " + user.getUsername());
+//        System.out.println(user);
+        // Validate email
+        if (!user.getEmail().matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            throw UserException.invalidEmail();
+        }
+        // Validate password
+        if (user.getPassword().length() < 8) {
+            throw UserException.invalidPasswordPattern();
+        }
+        // Validate name
+        if (user.getFirstname().length() < 2) {
+            throw UserException.invalidName();
+        }
+        // Validate phone
+        if (user.getPhone().length() < 10) {
+            throw UserException.invalidPhone();
+        }
+
+        // Check if user already exists
+        if (userRepository.existsByEmail(user.getEmail())) {
+            throw UserException.alreadyExists();
+        }
+
+        if (userRepository.existsByUsername(user.getUsername())) {
+            throw UserException.alreadyExists();
+        }
+
+        // Encrypt password
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         return userRepository.save(user);
 
     }
 
-
-    public void updateUserProfile(String userId, User user) throws UserException {
-        Optional<User> optUser = userRepository.findById(userId);
-        if (optUser.isEmpty()) {
-            throw UserException.notFound();
-        }
-        User user1 = optUser.get();
-        user1.setFirstname(user.getFirstname());
-        user1.setLastname(user.getLastname());
-        user1.setEmail(user.getEmail());
-        user1.setPhone(user.getPhone());
-        user1.setUsername(user.getUsername());
-        userRepository.save(user1);
-    }
 
 }

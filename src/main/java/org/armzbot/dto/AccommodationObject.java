@@ -3,17 +3,19 @@ package org.armzbot.dto;
 import lombok.Data;
 import org.armzbot.entity.AccommodationImages;
 
-import java.io.Serializable;
 import java.util.List;
 
 @Data
-public class AccommodationObject implements Serializable {
-
+public class AccommodationObject {
 
     private String accommodation_id;
+
     private String acc_name;
 
     private String room_type;
+
+    private int max_guest;
+
     private int minimum_nights;
 
     private int maximum_nights;

@@ -8,6 +8,9 @@ public class AccommodationRequest {
     private String acc_name;
 
     private String room_type;
+
+    private int max_guest;
+
     private int minimum_nights;
 
     private int maximum_nights;

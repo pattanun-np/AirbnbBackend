@@ -14,7 +14,7 @@ import java.sql.Date;
 @NoArgsConstructor
 public class Reservation extends BaseEntity implements Serializable {
     @Column(length = 3, nullable = false)
-    private int guest_ami;
+    private int guest_amt;
 
     @Column(length = 30, nullable = false)
     private Date checkIn;
@@ -43,7 +43,7 @@ public class Reservation extends BaseEntity implements Serializable {
     @JoinColumn(name = "user_id", nullable = false, updatable = false)
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "acc_id", nullable = false, updatable = false)
     private Accommodation accommodation;
 }
