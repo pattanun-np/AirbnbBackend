@@ -6,23 +6,31 @@ import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.cloud.StorageClient;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Base64;
 
 @Configuration
 @Log4j2
 public class FirebaseAdmin {
 
+    @Value("${env.app_services_account_key}")
+    String serviceAccountKey;
+
+    private byte[] DecodeServiceAccountKey(String serviceAccountKey) {
+//        System.out.println("serviceAccountKey: " + serviceAccountKey);
+        return Base64.getDecoder().decode(serviceAccountKey);
+    }
 
     private void initializeFirebaseApp() throws IOException {
 
         if (FirebaseApp.getApps() == null || FirebaseApp.getApps().isEmpty()) {
-            InputStream serviceAccount = FirebaseAdmin.class.getResourceAsStream("/serviceAccount.json");
-            assert serviceAccount != null;
+            InputStream serviceAccount = new java.io.ByteArrayInputStream(DecodeServiceAccountKey(serviceAccountKey));
             GoogleCredentials credentials = GoogleCredentials.fromStream(serviceAccount);
             FirebaseOptions options = FirebaseOptions.builder()
                     .setCredentials(credentials)

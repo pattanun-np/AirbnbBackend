@@ -19,7 +19,8 @@ This is a project to build a clone of the Airbnb website. The project is built u
 ```shell
 
 docker-compose up -d
-docker-compose down # to stop the database
+# to start the application
+docker-compose down # to stop the application
 
 
 ```

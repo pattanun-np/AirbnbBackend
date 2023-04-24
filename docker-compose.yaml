@@ -1,17 +1,28 @@
 version: "3.9"
 services:
-#  app:
-#    build:
-#      context: .
-#      dockerfile: Dockerfile
-#    container_name: app
-#    restart: always
-#    volumes:
-#      - .:/app
-#    ports:
-#      - "8081:8081"
-#    depends_on:
-#      - postgres
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: app
+    restart: always
+    env_file:
+      - .env
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}
+      - SPRING_DATASOURCE_USERNAME=${DATABASE_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${DATABASE_PASSWORD}
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_JPA_SHOW_SQL=true
+      - SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL=true
+      - APP_SERVICES_ACCOUNT_KEY=${APP_SERVICES_ACCOUNT_KEY}
+    volumes:
+      - .:/app
+    ports:
+      - "8081:8081"
+    depends_on:
+      - postgres
+
   postgres:
     image: postgres:latest
     container_name: postgres
